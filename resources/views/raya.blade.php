@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Selamat Hari Raya | Keluarga Azhan</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Great+Vibes&display=swap" rel="stylesheet">
+    <!-- Confetti JS -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    
+    <style>
+        .font-festive { font-family: 'Great Vibes', cursive; }
+        .font-body { font-family: 'Outfit', sans-serif; }
+        .glass {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in { animation: fadeInUp 0.8s ease-out forwards; }
+        
+        .blob {
+            position: fixed;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, #fbbf24 0%, transparent 70%);
+            filter: blur(60px);
+            opacity: 0.15;
+            z-index: -1;
+        }
+
+        /* Envelope Styles */
+        .envelope-wrapper {
+            perspective: 1000px;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+        .envelope-wrapper:hover { transform: scale(1.05); }
+        
+        .envelope {
+            width: 280px;
+            height: 180px;
+            background: #065f46;
+            position: relative;
+            border-radius: 0 0 10px 10px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .envelope::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 0;
+            border-left: 140px solid transparent;
+            border-right: 140px solid transparent;
+            border-bottom: 100px solid #047857;
+            z-index: 2;
+        }
+
+        .flap {
+            width: 0;
+            height: 0;
+            border-left: 140px solid transparent;
+            border-right: 140px solid transparent;
+            border-top: 100px solid #064e3b;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 3;
+            transform-origin: top;
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .open .flap {
+            transform: rotateX(180deg);
+            z-index: 1;
+        }
+
+        .hidden-content { display: none; opacity: 0; transition: opacity 1s ease-in; }
+    </style>
+</head>
+
+<body class="font-body bg-[#064e3b] bg-gradient-to-br from-[#064e3b] to-[#022c22] text-white min-h-screen flex flex-col items-center justify-center p-4 sm:p-6 overflow-x-hidden">
+
+    <div class="blob top-[-100px] right-[-100px]"></div>
+    <div class="blob bottom-[-150px] left-[-150px] !bg-green-400"></div>
+
+    <!-- 🎵 Lagu Raya -->
+    <audio id="rayaSong" loop>
+        <source src="{{ asset('audio/raya.mp3') }}" type="audio/mpeg">
+    </audio>
+
+    <!-- 🧧 Sampul Raya Intro -->
+    <div id="intro" class="flex flex-col items-center animate-fade-in">
+        <div id="envelopeWrapper" class="envelope-wrapper mb-8">
+            <div id="envelope" class="envelope">
+                <div class="flap"></div>
+                <div class="z-10 text-center">
+                    <p class="text-amber-400 font-bold tracking-widest uppercase text-xs mb-1">Kepada Semua</p>
+                    <span class="text-2xl">🎁</span>
+                    <p class="mt-2 text-white/80 text-[10px] italic">Klik untuk buka</p>
+                </div>
+            </div>
+        </div>
+        <h2 class="font-festive text-4xl text-amber-400">Daripada Keluarga Azhan</h2>
+    </div>
+
+    <!-- 🎉 Content Raya (Initially Hidden) -->
+    <div id="mainContent" class="hidden-content w-full flex flex-col items-center">
+        <!-- Header Section -->
+        <header class="text-center mb-10">
+            <h1 class="font-festive text-6xl sm:text-7xl text-amber-400 mb-2 drop-shadow-lg">Selamat Hari Raya</h1>
+            <h2 class="text-2xl sm:text-3xl font-light tracking-[0.3em] uppercase text-amber-100/80">Aidilfitri</h2>
+            <div class="mt-6 flex flex-col items-center">
+                <p class="text-lg opacity-90">Maaf Zahir & Batin</p>
+                <p class="mt-2 text-xl font-bold text-white border-b-2 border-amber-400 pb-1 uppercase">DARI KELUARGA AZHAN 💚</p>
+            </div>
+        </header>
+
+        <!-- 🥘 Ketupat Image -->
+        <div class="mb-10 text-center group">
+            <div class="relative inline-block">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/3/3a/Ketupat.jpg"
+                     class="rounded-3xl shadow-2xl w-64 sm:w-72 mx-auto border-4 border-amber-400/20 group-hover:border-amber-400/50 transition-all duration-500"
+                     alt="Ketupat Raya">
+                <div class="absolute -bottom-4 left-1/2 -translate-x-1/2 glass px-6 py-2 rounded-full whitespace-nowrap shadow-xl">
+                    <p class="text-sm font-bold text-amber-100">Jom makan-makan 😋🍽️</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content Area -->
+        <main class="w-full max-w-2xl space-y-8">
+            
+            @if(session('success'))
+                <div class="bg-emerald-500/20 border border-emerald-500 text-emerald-300 p-4 rounded-xl text-center shadow-xl">
+                    {{ session('success') }}
+                </div>
+            @endif
+
+            <!-- 📝 Form Card -->
+            <div class="glass p-6 sm:p-8 rounded-3xl shadow-2xl">
+                <h3 class="text-xl font-bold mb-6 text-center flex items-center justify-center gap-3">
+                    <span class="text-2xl">💬</span> Tinggalkan Ucapan Anda
+                </h3>
+
+                <form method="POST" action="/raya" class="space-y-4">
+                    @csrf
+                    <div class="space-y-1">
+                        <input type="text" name="name" placeholder="Nama Anda" 
+                            class="w-full bg-white/5 border border-white/10 rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-amber-400 focus:bg-white/10 transition-all" required maxlength="50">
+                    </div>
+
+                    <div class="space-y-1">
+                        <textarea name="message" placeholder="Tuliskan ucapan raya anda di sini..." rows="4"
+                            class="w-full bg-white/5 border border-white/10 rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-amber-400 focus:bg-white/10 transition-all resize-none" required maxlength="255"></textarea>
+                    </div>
+
+                    <button type="submit"
+                        class="w-full bg-gradient-to-r from-amber-400 to-amber-600 text-[#064e3b] font-extrabold py-3 rounded-xl hover:scale-[1.02] active:scale-100 transition-all shadow-lg uppercase tracking-wider">
+                        Hantar Ucapan
+                    </button>
+                </form>
+            </div>
+
+            <!-- 💬 Comment Wall -->
+            <div class="space-y-6">
+                <h3 class="text-2xl font-bold text-center text-amber-400 flex items-center justify-center gap-3">
+                    <span class="text-2xl">🎉</span> Ucapan Dari Tetamu
+                </h3>
+
+                <div class="grid gap-4">
+                    @forelse($comments as $comment)
+                        <div class="glass p-5 rounded-2xl border-white/5 hover:bg-white/15 transition-all group">
+                            <div class="flex justify-between items-start mb-2">
+                                <p class="font-extrabold text-amber-300 group-hover:text-amber-400 transition-colors">{{ $comment->name }}</p>
+                                <span class="text-[10px] uppercase tracking-widest opacity-50">{{ $comment->created_at->diffForHumans() }}</span>
+                            </div>
+                            <p class="text-white/90 leading-relaxed">{{ $comment->message }}</p>
+                        </div>
+                    @empty
+                        <div class="text-center py-10 opacity-50 italic">
+                            Belum ada ucapan lagi. Jadilah yang pertama!
+                        </div>
+                    @endforelse
+                </div>
+            </div>
+        </main>
+
+        <footer class="mt-20 pb-10 text-center opacity-40 text-xs">
+            <p>&copy; 2026 Keluarga Azhan. Built with 💚 for Raya.</p>
+        </footer>
+    </div>
+
+    <!-- 🎵 Music Control (Fixed) -->
+    <div id="musicControl" class="hidden fixed bottom-6 right-6 z-50">
+        <button id="musicToggle" class="w-12 h-12 bg-amber-400 text-[#064e3b] rounded-full shadow-2xl flex items-center justify-center hover:scale-110 active:scale-95 transition-all">
+            <span id="musicIcon">🎵</span>
+        </button>
+    </div>
+
+    <!-- Scripts -->
+    <script>
+        const audio = document.getElementById('rayaSong');
+        const musicToggle = document.getElementById('musicToggle');
+        const musicIcon = document.getElementById('musicIcon');
+        const intro = document.getElementById('intro');
+        const envelopeWrapper = document.getElementById('envelopeWrapper');
+        const mainContent = document.getElementById('mainContent');
+        const musicControl = document.getElementById('musicControl');
+        let isPlaying = false;
+
+        // Envelope Opening Logic
+        envelopeWrapper.addEventListener('click', () => {
+            document.getElementById('envelope').classList.add('open');
+            
+            // Trigger initial confetti
+            confetti({
+                particleCount: 150,
+                spread: 100,
+                origin: { y: 0.6 }
+            });
+
+            setTimeout(() => {
+                intro.style.display = 'none';
+                
+                // Show content with fade effect
+                mainContent.style.display = 'flex';
+                setTimeout(() => {
+                    mainContent.style.opacity = 1;
+                }, 50);
+
+                musicControl.classList.remove('hidden');
+                document.body.classList.remove('justify-center'); // Switch to top alignment
+                
+                // Play music
+                audio.play().then(() => {
+                    isPlaying = true;
+                    musicIcon.innerText = '🎵';
+                }).catch(e => {
+                    console.log("Autoplay blocked");
+                    musicIcon.innerText = '🔇';
+                });
+
+                // Launch continuous confetti effect
+                const duration = 3 * 1000;
+                const end = Date.now() + duration;
+
+                (function frame() {
+                    confetti({
+                        particleCount: 3,
+                        angle: 60,
+                        spread: 55,
+                        origin: { x: 0 },
+                        colors: ['#fbbf24', '#065f46', '#ffffff']
+                    });
+                    confetti({
+                        particleCount: 3,
+                        angle: 120,
+                        spread: 55,
+                        origin: { x: 1 },
+                        colors: ['#fbbf24', '#065f46', '#ffffff']
+                    });
+
+                    if (Date.now() < end) {
+                        requestAnimationFrame(frame);
+                    }
+                }());
+            }, 800);
+        });
+
+        // Music Toggle Logic
+        musicToggle.addEventListener('click', () => {
+            if (isPlaying) {
+                audio.pause();
+                musicIcon.innerText = '🔇';
+            } else {
+                audio.play().catch(e => console.log("Play failed"));
+                musicIcon.innerText = '🎵';
+            }
+            isPlaying = !isPlaying;
+        });
+    </script>
+</body>
+</html>
