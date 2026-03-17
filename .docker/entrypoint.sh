@@ -1,5 +1,8 @@
 #!/bin/sh
 
+# Create the SQLite database file if it doesn't exist
+touch /var/www/database/database.sqlite
+
 # Start PHP-FPM in background
 php-fpm -D
 
