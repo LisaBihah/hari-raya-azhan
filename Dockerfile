@@ -34,7 +34,7 @@ RUN composer install --no-interaction --optimize-autoloader --no-dev
 COPY .docker/nginx.conf /etc/nginx/sites-available/default
 
 # Permissions
-RUN chown -R www-data:www-data /var/www/storage /var/www/cache
+RUN chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache
 
 EXPOSE 80
 
