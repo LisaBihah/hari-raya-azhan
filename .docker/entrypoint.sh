@@ -11,11 +11,12 @@ chmod -R 777 /var/www/html/bootstrap/cache
 php artisan migrate --force
 
 # Start Apache in foreground
-# Railway assigns a port to $PORT, but the official apache image listens on 80.
-# We'll use sed to make Apache listen on $PORT if it's provided.
+# Railway assigns a port to $PORT. We make Apache listen on it.
 if [ -n "$PORT" ]; then
+    echo "Configuring Apache to listen on port $PORT"
     sed -i "s/Listen 80/Listen $PORT/g" /etc/apache2/ports.conf
-    sed -i "s/:80/:$PORT/g" /etc/apache2/sites-available/*.conf
+    # Replace :80 in any virtualhost config
+    find /etc/apache2/sites-available -type f -name "*.conf" -exec sed -i "s/:80/:$PORT/g" {} +
 fi
 
 exec apache2-foreground
