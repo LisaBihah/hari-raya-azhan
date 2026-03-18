@@ -13,19 +13,19 @@
         .font-festive { font-family: 'Great Vibes', cursive; }
         .font-body { font-family: 'Outfit', sans-serif; }
         .glass {
-            background: rgba(255, 255, 255, 0.05); /* Lighter to show wallpaper */
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .glass-wallpaper {
+            background: rgba(255, 255, 255, 0.05);
             backdrop-filter: blur(8px);
             -webkit-backdrop-filter: blur(8px);
             border: 1px solid rgba(255, 255, 255, 0.15);
             background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url("{{ asset('images/walpaper-card.jpg') }}");
             background-size: cover;
             background-position: center;
-        }
-        .glass-no-bg {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
         }
         @keyframes fadeInUp {
             from { opacity: 0; transform: translateY(20px); }
@@ -178,7 +178,7 @@
     <!-- 🧧 Sampul Raya Intro -->
     <div id="intro" class="flex flex-col items-center animate-fade-in py-4">
         <div id="envelopeWrapper" class="envelope-wrapper mb-4 scale-90 sm:scale-100">
-            <div id="envelope" class="envelope glass-no-bg">
+            <div id="envelope" class="envelope glass">
                 <div class="flap"></div>
                 <div class="z-10 text-center">
                     <p class="text-amber-400 font-bold tracking-widest uppercase text-[10px] mb-1">Kepada Semua</p>
@@ -222,7 +222,7 @@
         <main class="w-full max-w-xl space-y-6">
 
             <!-- 📝 Form Card -->
-            <div class="glass p-5 sm:p-6 rounded-2xl shadow-xl">
+            <div class="glass-wallpaper p-5 sm:p-6 rounded-2xl shadow-xl">
                 <form method="POST" action="/raya" class="space-y-4">
                     @csrf
                     <div class="space-y-1">
