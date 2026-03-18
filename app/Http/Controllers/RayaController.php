@@ -22,6 +22,10 @@ class RayaController extends Controller
             'type' => 'required|in:ucapan,lawak',
         ]);
 
+        if ($request->type === 'lawak' && !session('admin_mode')) {
+            return response()->json(['success' => false, 'message' => 'Hanya Admin boleh hantar lawak.'], 403);
+        }
+
         $comment = Comment::create([
             'name' => $request->name,
             'message' => $request->message,
@@ -62,5 +66,11 @@ class RayaController extends Controller
         }
 
         return redirect('/raya');
+    }
+
+    public function randomLawak()
+    {
+        $lawak = Comment::where('type', 'lawak')->inRandomOrder()->first();
+        return response()->json($lawak);
     }
 }

@@ -229,10 +229,12 @@
                             class="flex-1 bg-gradient-to-r from-emerald-500 to-green-600 text-white font-extrabold py-3 rounded-xl hover:scale-[1.02] active:scale-100 transition-all shadow-lg uppercase tracking-wider text-sm">
                             Hantar Ucapan 💚
                         </button>
+                        @if(session('admin_mode'))
                         <button type="submit" onclick="document.getElementById('submitType').value='lawak'"
                             class="flex-1 bg-gradient-to-r from-amber-400 to-amber-600 text-[#064e3b] font-extrabold py-3 rounded-xl hover:scale-[1.02] active:scale-100 transition-all shadow-lg uppercase tracking-wider text-sm">
-                            Hantar Lawak 😆
+                            Hantar Lawak 😆 (Admin)
                         </button>
+                        @endif
                     </div>
                 </form>
             </div>
@@ -278,34 +280,6 @@
                             </div>
                         @empty
                             <div class="text-center py-6 opacity-40 italic text-sm">Tiada ucapan lagi...</div>
-                        @endforelse
-                    </div>
-                </div>
-
-                <!-- Lawak Section -->
-                <div class="space-y-4">
-                    <h3 class="text-xl font-bold text-amber-400 flex items-center gap-2">
-                        <span>😆</span> Ruang Santai Raya
-                    </h3>
-                    <div id="lawakWall" class="grid gap-2">
-                        @forelse($lawak as $comment)
-                            <div class="glass p-3 rounded-lg border-amber-400/10 hover:bg-white/15 transition-all group relative border-l-2 border-l-amber-500/50">
-                                <div class="flex justify-between items-start mb-0.5">
-                                    <p class="font-bold text-amber-300 group-hover:text-amber-400 transition-colors text-[13px]">{{ $comment->name }}</p>
-                                    <div class="flex items-center gap-2">
-                                        <span class="text-[8px] uppercase tracking-widest opacity-40">{{ $comment->created_at->diffForHumans() }}</span>
-                                        @if(session('admin_mode'))
-                                            <form method="POST" action="/raya/comments/{{ $comment->id }}" class="inline">
-                                                @csrf @method('DELETE')
-                                                <button type="submit" class="text-red-400 hover:text-red-300 text-[10px] uppercase font-bold" onclick="return confirm('Padam?')">[x]</button>
-                                            </form>
-                                        @endif
-                                    </div>
-                                </div>
-                                <p class="text-white/80 text-sm leading-snug">😂 {{ $comment->message }}</p>
-                            </div>
-                        @empty
-                            <div class="text-center py-6 opacity-40 italic text-sm">Ruang santai masih kosong...</div>
                         @endforelse
                     </div>
                 </div>
