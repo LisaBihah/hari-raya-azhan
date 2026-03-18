@@ -26,9 +26,10 @@ chmod -R 777 /var/www/html/database
 chmod -R 777 /var/www/html/storage
 chmod -R 777 /var/www/html/bootstrap/cache
 
-# 4. Run Migrations
-echo "Running migrations..."
+# 4. Run Migrations & Seeding
+echo "Running migrations and seeding..."
 php artisan migrate --force
+php artisan db:seed --force
 
 # 5. Start Apache
 echo "Starting Apache..."
