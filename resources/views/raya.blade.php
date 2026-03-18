@@ -18,15 +18,6 @@
             -webkit-backdrop-filter: blur(12px);
             border: 1px solid rgba(255, 255, 255, 0.2);
         }
-        .glass-wallpaper {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url("{{ asset('images/walpaper-card.jpg') }}");
-            background-size: cover;
-            background-position: center;
-        }
         @keyframes fadeInUp {
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
@@ -138,7 +129,6 @@
             transition: justify-content 0.5s;
         }
         .is-open .main-wrapper {
-            justify-content: flex-start;
             padding-top: 2rem;
             overflow-y: auto;
         }
@@ -222,7 +212,7 @@
         <main class="w-full max-w-xl space-y-6">
 
             <!-- 📝 Form Card -->
-            <div class="glass-wallpaper p-5 sm:p-6 rounded-2xl shadow-xl">
+            <div class="glass p-5 sm:p-6 rounded-2xl shadow-xl">
                 <form method="POST" action="/raya" class="space-y-4">
                     @csrf
                     <div class="space-y-1">
