@@ -13,6 +13,15 @@
         .font-festive { font-family: 'Great Vibes', cursive; }
         .font-body { font-family: 'Outfit', sans-serif; }
         .glass {
+            background: rgba(255, 255, 255, 0.05); /* Lighter to show wallpaper */
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url("{{ asset('images/walpaper-card.jpg') }}");
+            background-size: cover;
+            background-position: center;
+        }
+        .glass-no-bg {
             background: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
@@ -107,10 +116,27 @@
         img {
             -webkit-touch-callout: none;
         }
+        /* Mobile No-Scroll Setup */
+        html, body {
+            height: 100%;
+            overflow: hidden; /* Lock main scroll */
+            position: fixed;
+            width: 100%;
+        }
+        .scrollable-area {
+            height: 100%;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
     </style>
 </head>
 
-<body class="font-body bg-[#064e3b] bg-gradient-to-br from-[#064e3b] to-[#022c22] text-white min-h-screen flex flex-col items-center justify-center p-2 sm:p-4 overflow-x-hidden">
+<body class="font-body bg-[#064e3b] bg-gradient-to-br from-[#064e3b] to-[#022c22] text-white">
+    <div class="scrollable-area p-2 sm:p-4">
 
     <div class="blob top-[-100px] right-[-100px]"></div>
     <div class="blob bottom-[-150px] left-[-150px] !bg-green-400"></div>
@@ -141,7 +167,7 @@
     <!-- 🧧 Sampul Raya Intro -->
     <div id="intro" class="flex flex-col items-center animate-fade-in py-4">
         <div id="envelopeWrapper" class="envelope-wrapper mb-4 scale-90 sm:scale-100">
-            <div id="envelope" class="envelope">
+            <div id="envelope" class="envelope glass-no-bg">
                 <div class="flap"></div>
                 <div class="z-10 text-center">
                     <p class="text-amber-400 font-bold tracking-widest uppercase text-[10px] mb-1">Kepada Semua</p>
@@ -159,7 +185,7 @@
     </div>
 
     <!-- 🎉 Content Raya (Initially Hidden) -->
-    <div id="mainContent" class="hidden-content w-full flex flex-col items-center px-2">
+    <div id="mainContent" class="hidden-content w-full flex flex-col items-center px-2 pb-20">
         <!-- Header Section -->
         <header class="text-center mb-4">
             <h1 class="font-festive text-4xl sm:text-5xl text-amber-400 mb-0.5 drop-shadow-lg">Selamat Hari Raya</h1>
@@ -353,5 +379,6 @@
             }
         });
     </script>
+    </div>
 </body>
 </html>
