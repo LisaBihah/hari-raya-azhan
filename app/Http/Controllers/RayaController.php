@@ -10,33 +10,21 @@ class RayaController extends Controller
     public function index()
     {
         $ucapan = Comment::where('type', 'ucapan')->latest()->get();
-        $lawak = Comment::where('type', 'lawak')->latest()->get();
-        return view('raya', compact('ucapan', 'lawak'));
+        return view('raya', compact('ucapan'));
     }
 
     public function store(Request $request)
     {
-        $rules = [
+        $request->validate([
             'name' => 'required|max:50',
             'message' => 'required|max:255',
-            'type' => 'required|in:ucapan,lawak',
-        ];
-
-        // For jokes, if admin is logged in, name is optional
-        if ($request->type === 'lawak' && session('admin_mode')) {
-            $rules['name'] = 'nullable|max:50';
-        }
-
-        $request->validate($rules);
-
-        if ($request->type === 'lawak' && !session('admin_mode')) {
-            return response()->json(['success' => false, 'message' => 'Hanya Admin boleh hantar lawak.'], 403);
-        }
+            'type' => 'required|in:ucapan',
+        ]);
 
         $comment = Comment::create([
-            'name' => ($request->type === 'lawak') ? null : $request->name,
+            'name' => $request->name,
             'message' => $request->message,
-            'type' => $request->type,
+            'type' => 'ucapan',
         ]);
 
         if ($request->ajax()) {
@@ -73,11 +61,5 @@ class RayaController extends Controller
         }
 
         return redirect('/raya');
-    }
-
-    public function randomLawak()
-    {
-        $lawak = Comment::where('type', 'lawak')->inRandomOrder()->first();
-        return response()->json($lawak);
     }
 }

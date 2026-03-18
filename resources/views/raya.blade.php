@@ -262,20 +262,6 @@
             </div>
             @endif
 
-            <!-- 😂 Ruang Santai Raya (Random Generator) -->
-            <div class="glass p-6 rounded-2xl shadow-xl text-center space-y-4 border-amber-400/30">
-                <h3 class="font-festive text-3xl text-amber-400">Ruang Santai Raya 😂</h3>
-                <p class="text-white/70 text-sm">Klik butang bawah kalau nak gelak surprize!</p>
-                
-                <div id="jokeDisplay" class="min-h-[60px] flex items-center justify-center p-4 bg-white/5 rounded-xl border border-white/5 italic text-amber-100 hidden">
-                    <p id="jokeText"></p>
-                </div>
-
-                <button onclick="getLawak()"
-                    class="bg-white/10 hover:bg-white/20 text-amber-400 border border-amber-400/50 px-6 py-2 rounded-full transition-all flex items-center gap-2 mx-auto active:scale-95">
-                    🎲 <span id="btnJokeText">Bagi aku satu lawak!</span>
-                </button>
-            </div>
 
             <!-- 💬 Comment Wall -->
             <div class="space-y-8">
@@ -383,9 +369,8 @@
         // 🚀 AJAX Form Submission
         const commentForm = document.getElementById('commentForm');
         const ucapanWall = document.getElementById('ucapanWall');
-        const lawakWall = document.getElementById('lawakWall');
 
-        commentForm.addEventListener('submit', async (e) => {
+        if (commentForm) commentForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             
             const formData = new FormData(commentForm);
@@ -455,36 +440,6 @@
             }
         });
 
-        // 🎲 Random Lawak Logic
-        async function getLawak() {
-            const jokeDisplay = document.getElementById('jokeDisplay');
-            const jokeText = document.getElementById('jokeText');
-            const btnText = document.getElementById('btnJokeText');
-            
-            btnText.innerText = "Mencari...";
-            
-            try {
-                const response = await fetch('/random-lawak');
-                const data = await response.json();
-                
-                jokeDisplay.classList.remove('hidden');
-                
-                if (data && data.message) {
-                    jokeText.innerHTML = `😂 "${data.message}"`;
-                } else {
-                    jokeText.innerText = "Belum ada lawak lagi. Admin tengah masak lawak... 😆";
-                }
-                
-                // Pop animation
-                jokeDisplay.style.transform = 'scale(0.95)';
-                setTimeout(() => jokeDisplay.style.transform = 'scale(1)', 100);
-                
-            } catch (error) {
-                console.error('Error fetching joke:', error);
-            } finally {
-                btnText.innerText = "Bagi aku satu lawak!";
-            }
-        }
 
         // ⚙️ Admin Panel Logic
         function toggleAdminPanel() {
@@ -521,31 +476,13 @@
         </div>
 
         <div class="space-y-8">
-            <!-- Part 1: Tambah Lawak (Strictly Message only) -->
-            <section class="space-y-4">
-                <h3 class="text-xs font-bold text-amber-400 uppercase tracking-widest border-b border-white/10 pb-2 flex items-center gap-2">
-                   <span>😂</span> Tambah Lawak Baru
-                </h3>
-                <form id="adminJokeForm" class="space-y-3">
-                    @csrf
-                    <input type="hidden" name="type" value="lawak">
-                    <div class="space-y-1">
-                        <label class="text-[10px] uppercase text-white/40 font-bold ml-1">Ayat Lawak</label>
-                        <textarea name="message" placeholder="Tulis ayat lawak kat sini..." rows="4"
-                            class="w-full bg-white/5 border border-white/20 rounded-xl p-3 focus:outline-none focus:ring-1 focus:ring-amber-400 transition-all font-body text-sm placeholder:text-white/20" required></textarea>
-                    </div>
-                    <button type="submit" class="w-full bg-amber-500 text-[#064e3b] font-extrabold py-3 rounded-xl text-xs uppercase shadow-lg hover:scale-[1.02] transition-all">
-                        Simpan & Bagi Ayat Lawak ✨
-                    </button>
-                </form>
-            </section>
 
-            <!-- Part 2: Urus Komen / Ucapan (Delete Only) -->
-            <section class="space-y-4 pt-4 border-t border-white/10">
+            <!-- Part 3: Urus Ucapan User (Padam) -->
+            <section class="space-y-3 pt-4 border-t border-white/10">
                 <h3 class="text-xs font-bold text-emerald-400 uppercase tracking-widest flex items-center gap-2">
-                   <span>💚</span> Padam Ucapan User
+                   <span>💚</span> Ucapan User <span class="ml-auto text-white/30">({{ $ucapan->count() }})</span>
                 </h3>
-                <div class="space-y-2 max-h-[300px] overflow-y-auto pr-2 custom-scrollbar">
+                <div class="space-y-2 max-h-[200px] overflow-y-auto pr-1">
                     @forelse($ucapan as $c)
                         <div class="bg-white/5 p-3 rounded-lg border border-white/10 flex justify-between items-center group">
                             <div class="min-w-0 pr-2">
@@ -554,48 +491,18 @@
                             </div>
                             <form method="POST" action="/raya/comments/{{ $c->id }}">
                                 @csrf @method('DELETE')
-                                <button type="submit" class="bg-red-500/20 hover:bg-red-500 text-red-500 hover:text-white px-2 py-1 rounded text-[9px] font-bold uppercase transition-all" onclick="return confirm('Padam ucapan ini?')">Padam</button>
+                                <button type="submit" class="bg-red-500/20 hover:bg-red-500 text-red-500 hover:text-white px-2 py-1 rounded text-[9px] font-bold uppercase transition-all flex-shrink-0" onclick="return confirm('Padam ucapan ini?')">Padam</button>
                             </form>
                         </div>
                     @empty
-                        <div class="text-center py-8 opacity-20 text-[10px] italic">Tiada ucapan tersimpan...</div>
+                        <div class="text-center py-4 opacity-20 text-[10px] italic">Tiada ucapan tersimpan...</div>
                     @endforelse
                 </div>
             </section>
         </div>
     </div>
 
-    <script>
-        // Admin Joke Submission
-        const adminJokeForm = document.getElementById('adminJokeForm');
-        adminJokeForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const submitBtn = adminJokeForm.querySelector('button');
-            const originalText = submitBtn.innerText;
-            submitBtn.disabled = true;
-            submitBtn.innerText = 'Menyimpan...';
 
-            try {
-                const response = await fetch('/raya', {
-                    method: 'POST',
-                    body: new FormData(adminJokeForm),
-                    headers: { 'X-Requested-With': 'XMLHttpRequest', 'Accept': 'application/json' }
-                });
-                const data = await response.json();
-                if (data.success) {
-                    alert('Lawak berjaya ditambah!');
-                    adminJokeForm.reset();
-                    // Optional: trigger confetti
-                    confetti({ particleCount: 50, spread: 60, origin: { x: 0.8, y: 0.5 } });
-                }
-            } catch (err) {
-                alert('Gagal simpan lawak.');
-            } finally {
-                submitBtn.disabled = false;
-                submitBtn.innerText = originalText;
-            }
-        });
-    </script>
     @endif
 
     </div>
