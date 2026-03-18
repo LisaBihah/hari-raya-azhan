@@ -294,6 +294,24 @@
         const musicControl = document.getElementById('musicControl');
         let isPlaying = false;
 
+        // Function to start music (safely)
+        const startRayaMusic = () => {
+            if (isPlaying) return;
+            audio.play().then(() => {
+                isPlaying = true;
+                musicIcon.innerText = '🎵';
+                musicControl.classList.remove('hidden');
+            }).catch(e => {
+                console.log("Autoplay blocked, waiting for interaction");
+                musicIcon.innerText = '🔇';
+            });
+        };
+
+        // If card is already open (from session), try to play on any click
+        @if(session('card_opened'))
+            document.addEventListener('click', startRayaMusic, { once: true });
+        @endif
+
         // Envelope Opening Logic
         envelopeWrapper.addEventListener('click', () => {
             document.getElementById('envelope').classList.add('open');
@@ -319,13 +337,7 @@
                 musicControl.classList.remove('hidden');
                 
                 // Play music
-                audio.play().then(() => {
-                    isPlaying = true;
-                    musicIcon.innerText = '🎵';
-                }).catch(e => {
-                    console.log("Autoplay blocked");
-                    musicIcon.innerText = '🔇';
-                });
+                startRayaMusic();
 
                 // Launch continuous confetti effect
                 const duration = 3 * 1000;
@@ -371,10 +383,11 @@
 
         document.addEventListener('keydown', (e) => {
             // Block Ctrl+S, Ctrl+U, Ctrl+P, Ctrl+Shift+I, F12
+            // Also block Win+Shift+S (PrintScreen) attempt
             if (
                 (e.ctrlKey && (e.key === 's' || e.key === 'u' || e.key === 'p')) ||
-                (e.ctrlKey && e.shiftKey && (e.key === 'i' || e.key === 'j' || e.key === 'c')) ||
-                e.key === 'F12' || e.key === 'PrintScreen'
+                (e.ctrlKey && e.shiftKey && (e.key === 'i' || e.key === 'j' || e.key === 'c' || e.key === 's')) ||
+                e.key === 'F12' || e.key === 'PrintScreen' || e.key === 'p' && e.metaKey
             ) {
                 e.preventDefault();
                 return false;
