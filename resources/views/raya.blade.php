@@ -180,41 +180,36 @@
             </div>
         </header>
 
-        <!-- 🥘 Ketupat Image -->
         <div class="mb-6 text-center group">
             <div class="relative inline-block">
                 <img src="https://upload.wikimedia.org/wikipedia/commons/3/3a/Ketupat.jpg"
                      class="rounded-2xl shadow-xl w-48 sm:w-56 mx-auto border-2 border-amber-400/20 group-hover:border-amber-400/50 transition-all duration-500"
+                     id="familyImage"
                      alt="Ketupat Raya">
-                <div class="absolute -bottom-3 left-1/2 -translate-x-1/2 glass px-4 py-1 rounded-full whitespace-nowrap shadow-lg">
-                    <p class="text-[10px] font-bold text-amber-100 uppercase tracking-tighter">Jom makan-makan 😋🍽️</p>
-                </div>
             </div>
         </div>
 
         <!-- Main Content Area -->
         <main class="w-full max-w-xl space-y-6">
-            
-            @if(session('success'))
-                <div class="bg-emerald-500/20 border border-emerald-500 text-emerald-300 p-4 rounded-xl text-center shadow-xl">
-                    {{ session('success') }}
-                </div>
-            @endif
 
             <!-- 📝 Form Card -->
             <div class="glass p-5 sm:p-6 rounded-2xl shadow-xl">
-                <form method="POST" action="/raya" class="space-y-3">
+                <form method="POST" action="/raya" class="space-y-4">
                     @csrf
-                    <div class="flex flex-col sm:flex-row gap-3">
+                    <div class="space-y-1">
                         <input type="text" name="name" placeholder="Nama Anda" 
-                            class="flex-1 bg-white/5 border border-white/10 rounded-xl p-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400 focus:bg-white/10 transition-all" required maxlength="50">
-                        <button type="submit"
-                            class="sm:w-32 bg-gradient-to-r from-amber-400 to-amber-600 text-[#064e3b] font-extrabold py-2.5 rounded-xl hover:scale-[1.02] active:scale-100 transition-all shadow-lg uppercase text-xs tracking-wider">
-                            Hantar
-                        </button>
+                            class="w-full bg-white/5 border border-white/10 rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-amber-400 focus:bg-white/10 transition-all" required maxlength="50">
                     </div>
-                    <textarea name="message" placeholder="Tuliskan ucapan raya anda di sini..." rows="2"
-                        class="w-full bg-white/5 border border-white/10 rounded-xl p-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400 focus:bg-white/10 transition-all resize-none" required maxlength="255"></textarea>
+
+                    <div class="space-y-1">
+                        <textarea name="message" placeholder="Tuliskan ucapan raya anda di sini..." rows="3"
+                            class="w-full bg-white/5 border border-white/10 rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-amber-400 focus:bg-white/10 transition-all resize-none" required maxlength="255"></textarea>
+                    </div>
+
+                    <button type="submit"
+                        class="w-full bg-gradient-to-r from-amber-400 to-amber-600 text-[#064e3b] font-extrabold py-3 rounded-xl hover:scale-[1.02] active:scale-100 transition-all shadow-lg uppercase tracking-wider">
+                        Hantar Ucapan
+                    </button>
                 </form>
             </div>
 

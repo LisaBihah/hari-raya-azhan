@@ -25,7 +25,7 @@ class RayaController extends Controller
             'message' => $request->message,
         ]);
 
-        return redirect('/raya')->with('success', 'Ucapan anda telah dihantar! Selamat Hari Raya!');
+        return redirect('/raya');
     }
 
     public function adminLogin($secret)
