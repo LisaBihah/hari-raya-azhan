@@ -87,6 +87,16 @@
         }
 
         .hidden-content { display: none; opacity: 0; transition: opacity 1s ease-in; }
+
+        /* Floating Animation */
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0); }
+            50% { transform: translateY(-20px) rotate(10deg); }
+        }
+        .animate-float { animation: float 6s ease-in-out infinite; }
+        .delay-1 { animation-delay: 1s; }
+        .delay-2 { animation-delay: 2s; }
+        .delay-3 { animation-delay: 3s; }
     </style>
 </head>
 
@@ -94,6 +104,42 @@
 
     <div class="blob top-[-100px] right-[-100px]"></div>
     <div class="blob bottom-[-150px] left-[-150px] !bg-green-400"></div>
+
+    <!-- 🏮 Pelita & Ketupat Background Decorations -->
+    <div class="fixed inset-0 pointer-events-none overflow-hidden z-0 opacity-20">
+        <!-- Pelita 1 -->
+        <div class="absolute top-10 left-[10%] animate-float delay-1">
+            <svg width="60" height="60" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 2L9 7H15L12 2Z" fill="#fbbf24"/>
+                <path d="M6 7H18V18C18 19.1046 17.1046 20 16 20H8C6.89543 20 6 19.1046 6 18V7Z" fill="#92400e"/>
+                <rect x="5" y="7" width="14" height="2" fill="#78350f"/>
+                <circle cx="12" cy="4" r="1" fill="#fef3c7"/>
+            </svg>
+        </div>
+        <!-- Ketupat 1 -->
+        <div class="absolute top-40 right-[15%] animate-float delay-2">
+            <svg width="80" height="80" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 2L2 12L12 22L22 12L12 2Z" fill="#4ade80" stroke="#166534" stroke-width="1"/>
+                <path d="M12 2V22M2 12H22" stroke="#166534" stroke-width="0.5"/>
+                <path d="M7 7L17 17M17 7L7 17" stroke="#166534" stroke-width="0.5"/>
+            </svg>
+        </div>
+        <!-- Pelita 2 -->
+        <div class="absolute bottom-20 right-[10%] animate-float delay-3">
+            <svg width="50" height="50" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 2L9 7H15L12 2Z" fill="#fbbf24"/>
+                <path d="M6 7H18V18C18 19.1046 17.1046 20 16 20H8C6.89543 20 6 19.1046 6 18V7Z" fill="#92400e"/>
+                <rect x="5" y="7" width="14" height="2" fill="#78350f"/>
+            </svg>
+        </div>
+        <!-- Ketupat 2 -->
+        <div class="absolute bottom-40 left-[15%] animate-float">
+            <svg width="60" height="60" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 2L2 12L12 22L22 12L12 2Z" fill="#22c55e" stroke="#14532d" stroke-width="1"/>
+                <path d="M12 2V22M2 12H22" stroke="#14532d" stroke-width="0.5"/>
+            </svg>
+        </div>
+    </div>
 
     <!-- 🎵 Lagu Raya -->
     <audio id="rayaSong" loop>
@@ -112,7 +158,12 @@
                 </div>
             </div>
         </div>
-        <h2 class="font-festive text-4xl text-amber-400">Daripada Keluarga Azhan</h2>
+        <h2 class="font-festive text-3xl sm:text-4xl text-amber-400 text-center max-w-sm leading-relaxed">
+            Di hari yang mulia ini,<br>
+            kami sekeluarga menyusun sepuluh jari<br>
+            memohon ampun dan maaf<br>
+            zahir serta batin 💚
+        </h2>
     </div>
 
     <!-- 🎉 Content Raya (Initially Hidden) -->
@@ -122,8 +173,10 @@
             <h1 class="font-festive text-6xl sm:text-7xl text-amber-400 mb-2 drop-shadow-lg">Selamat Hari Raya</h1>
             <h2 class="text-2xl sm:text-3xl font-light tracking-[0.3em] uppercase text-amber-100/80">Aidilfitri</h2>
             <div class="mt-6 flex flex-col items-center">
-                <p class="text-lg opacity-90">Maaf Zahir & Batin</p>
-                <p class="mt-2 text-xl font-bold text-white border-b-2 border-amber-400 pb-1 uppercase">DARI KELUARGA AZHAN 💚</p>
+                <p class="text-lg opacity-90 max-w-md">
+                    Di hari yang mulia ini, kami sekeluarga menyusun sepuluh jari memohon ampun dan maaf zahir serta batin 💚
+                </p>
+                <p class="mt-4 text-xl font-bold text-white border-b-2 border-amber-400 pb-1 uppercase tracking-widest">KELUARGA AZHAN</p>
             </div>
         </header>
 
