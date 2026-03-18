@@ -136,7 +136,18 @@
     </style>
 </head>
 
-<body class="font-body bg-[#064e3b] bg-gradient-to-br from-[#064e3b] to-[#022c22] text-white is-locked">
+<body class="font-body bg-[#064e3b] bg-gradient-to-br from-[#064e3b] to-[#022c22] text-white is-locked overflow-hidden">
+    <!-- 🌟 Start Overlay (For Music Autoplay) -->
+    <div id="startOverlay" class="fixed inset-0 z-[100] bg-[#064e3b] flex flex-col items-center justify-center p-6 text-center transition-opacity duration-700">
+        <div class="glass p-8 rounded-3xl border-amber-400/30 animate-fade-in max-w-sm w-full">
+            <h1 class="font-festive text-4xl text-amber-400 mb-4">Selamat Hari Raya</h1>
+            <p class="text-amber-100/80 mb-8 italic">Klik butang di bawah untuk jemputan istimewa & lagu raya</p>
+            <button id="startButton" class="w-full bg-gradient-to-r from-amber-400 to-amber-600 text-[#064e3b] font-extrabold py-4 rounded-2xl hover:scale-105 active:scale-95 transition-all shadow-[0_0_20px_rgba(251,191,36,0.5)] uppercase tracking-widest flex items-center justify-center gap-3">
+                <span class="text-xl">💌</span> Lihat Jemputan
+            </button>
+        </div>
+    </div>
+
     <div class="main-wrapper" id="pageWrapper">
 
     <div class="blob top-[-100px] right-[-100px]"></div>
@@ -166,7 +177,7 @@
     </audio>
 
     <!-- 🧧 Sampul Raya Intro -->
-    <div id="intro" class="flex flex-col items-center animate-fade-in py-4">
+    <div id="intro" class="flex flex-col items-center animate-fade-in py-4 opacity-0 transition-opacity duration-700">
         <div id="envelopeWrapper" class="envelope-wrapper mb-4 scale-90 sm:scale-100">
             <div id="envelope" class="envelope glass">
                 <div class="flap"></div>
@@ -235,7 +246,7 @@
             <!-- 💬 Comment Wall -->
             <div class="space-y-4">
                 <h3 class="text-xl font-bold text-center text-amber-400 flex items-center justify-center gap-2">
-                    <span class="text-xl">💌</span> Titipan Ucapan dari Saudara & Sahabat
+                    <span class="text-xl">🌏</span> Wall of Raya Wishes
                 </h3>
 
                 <div id="commentWall" class="grid gap-2">
@@ -286,6 +297,8 @@
     <!-- Scripts -->
     <script>
         const audio = document.getElementById('rayaSong');
+        const startOverlay = document.getElementById('startOverlay');
+        const startButton = document.getElementById('startButton');
         const musicToggle = document.getElementById('musicToggle');
         const musicIcon = document.getElementById('musicIcon');
         const intro = document.getElementById('intro');
@@ -293,6 +306,18 @@
         const mainContent = document.getElementById('mainContent');
         const musicControl = document.getElementById('musicControl');
         let isPlaying = false;
+
+        // 🌟 Start Function
+        startButton.addEventListener('click', () => {
+            startOverlay.style.opacity = '0';
+            setTimeout(() => {
+                startOverlay.style.display = 'none';
+                intro.classList.remove('opacity-0');
+            }, 700);
+
+            // Try to start music immediately on first user interaction
+            startRayaMusic();
+        });
 
         // Function to start music (safely)
         const startRayaMusic = () => {
