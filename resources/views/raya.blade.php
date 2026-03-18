@@ -136,7 +136,7 @@
     </style>
 </head>
 
-<body class="font-body bg-[#064e3b] bg-gradient-to-br from-[#064e3b] to-[#022c22] text-white is-locked">
+<body class="font-body bg-[#064e3b] bg-gradient-to-br from-[#064e3b] to-[#022c22] text-white {{ session('card_opened') ? 'is-open' : 'is-locked' }}">
     <div class="main-wrapper" id="pageWrapper">
 
     <div class="blob top-[-100px] right-[-100px]"></div>
@@ -166,7 +166,7 @@
     </audio>
 
     <!-- 🧧 Sampul Raya Intro -->
-    <div id="intro" class="flex flex-col items-center animate-fade-in py-4">
+    <div id="intro" class="flex flex-col items-center animate-fade-in py-4" style="{{ session('card_opened') ? 'display: none;' : '' }}">
         <div id="envelopeWrapper" class="envelope-wrapper mb-4 scale-90 sm:scale-100">
             <div id="envelope" class="envelope glass">
                 <div class="flap"></div>
@@ -186,7 +186,7 @@
     </div>
 
     <!-- 🎉 Content Raya (Initially Hidden) -->
-    <div id="mainContent" class="hidden-content w-full flex flex-col items-center px-4 pb-24">
+    <div id="mainContent" class="hidden-content w-full flex flex-col items-center px-4 pb-24" style="{{ session('card_opened') ? 'display: flex; opacity: 1;' : '' }}">
         <!-- Header Section -->
         <header class="text-center mb-4">
             <h1 class="font-festive text-4xl sm:text-5xl text-amber-400 mb-0.5 drop-shadow-lg">Selamat Hari Raya</h1>
@@ -277,7 +277,7 @@
     </div>
 
     <!-- 🎵 Music Control (Fixed) -->
-    <div id="musicControl" class="hidden fixed bottom-6 right-6 z-50">
+    <div id="musicControl" class="{{ session('card_opened') ? '' : 'hidden' }} fixed bottom-6 right-6 z-50">
         <button id="musicToggle" class="w-12 h-12 bg-amber-400 text-[#064e3b] rounded-full shadow-2xl flex items-center justify-center hover:scale-110 active:scale-95 transition-all">
             <span id="musicIcon">🎵</span>
         </button>
