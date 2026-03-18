@@ -182,10 +182,10 @@
 
         <div class="mb-6 text-center group">
             <div class="relative inline-block">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/3/3a/Ketupat.jpg"
-                     class="rounded-2xl shadow-xl w-48 sm:w-56 mx-auto border-2 border-amber-400/20 group-hover:border-amber-400/50 transition-all duration-500"
+                <img src="{{ asset('images/raya-2026.jpg') }}"
+                     class="rounded-2xl shadow-xl w-64 sm:w-80 mx-auto border-2 border-amber-400/20 group-hover:border-amber-400/50 transition-all duration-500"
                      id="familyImage"
-                     alt="Ketupat Raya">
+                     alt="Keluarga Azhan">
             </div>
         </div>
 
