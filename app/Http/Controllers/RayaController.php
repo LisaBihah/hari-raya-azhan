@@ -20,10 +20,21 @@ class RayaController extends Controller
             'message' => 'required|max:255',
         ]);
 
-        Comment::create([
+        $comment = Comment::create([
             'name' => $request->name,
             'message' => $request->message,
         ]);
+
+        if ($request->ajax()) {
+            return response()->json([
+                'success' => true,
+                'comment' => [
+                    'name' => $comment->name,
+                    'message' => $comment->message,
+                    'created_at' => $comment->created_at->diffForHumans()
+                ]
+            ]);
+        }
 
         return redirect('/raya');
     }

@@ -354,6 +354,16 @@
                     }
                 });
 
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    if (response.status === 422 && errorData.errors) {
+                        const firstError = Object.values(errorData.errors)[0][0];
+                        alert(firstError);
+                        return;
+                    }
+                    throw new Error('Server error');
+                }
+
                 const data = await response.json();
 
                 if (data.success) {
