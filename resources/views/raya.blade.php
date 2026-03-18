@@ -100,43 +100,25 @@
     </style>
 </head>
 
-<body class="font-body bg-[#064e3b] bg-gradient-to-br from-[#064e3b] to-[#022c22] text-white min-h-screen flex flex-col items-center justify-center p-4 sm:p-6 overflow-x-hidden">
+<body class="font-body bg-[#064e3b] bg-gradient-to-br from-[#064e3b] to-[#022c22] text-white min-h-screen flex flex-col items-center justify-center p-2 sm:p-4 overflow-x-hidden">
 
     <div class="blob top-[-100px] right-[-100px]"></div>
     <div class="blob bottom-[-150px] left-[-150px] !bg-green-400"></div>
 
     <!-- 🏮 Pelita & Ketupat Background Decorations -->
-    <div class="fixed inset-0 pointer-events-none overflow-hidden z-0 opacity-20">
+    <div class="fixed inset-0 pointer-events-none overflow-hidden z-0 opacity-10">
         <!-- Pelita 1 -->
-        <div class="absolute top-10 left-[10%] animate-float delay-1">
-            <svg width="60" height="60" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <div class="absolute top-5 left-[5%] animate-float delay-1">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M12 2L9 7H15L12 2Z" fill="#fbbf24"/>
                 <path d="M6 7H18V18C18 19.1046 17.1046 20 16 20H8C6.89543 20 6 19.1046 6 18V7Z" fill="#92400e"/>
                 <rect x="5" y="7" width="14" height="2" fill="#78350f"/>
-                <circle cx="12" cy="4" r="1" fill="#fef3c7"/>
             </svg>
         </div>
         <!-- Ketupat 1 -->
-        <div class="absolute top-40 right-[15%] animate-float delay-2">
-            <svg width="80" height="80" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M12 2L2 12L12 22L22 12L12 2Z" fill="#4ade80" stroke="#166534" stroke-width="1"/>
-                <path d="M12 2V22M2 12H22" stroke="#166534" stroke-width="0.5"/>
-                <path d="M7 7L17 17M17 7L7 17" stroke="#166534" stroke-width="0.5"/>
-            </svg>
-        </div>
-        <!-- Pelita 2 -->
-        <div class="absolute bottom-20 right-[10%] animate-float delay-3">
-            <svg width="50" height="50" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M12 2L9 7H15L12 2Z" fill="#fbbf24"/>
-                <path d="M6 7H18V18C18 19.1046 17.1046 20 16 20H8C6.89543 20 6 19.1046 6 18V7Z" fill="#92400e"/>
-                <rect x="5" y="7" width="14" height="2" fill="#78350f"/>
-            </svg>
-        </div>
-        <!-- Ketupat 2 -->
-        <div class="absolute bottom-40 left-[15%] animate-float">
+        <div class="absolute top-20 right-[5%] animate-float delay-2">
             <svg width="60" height="60" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M12 2L2 12L12 22L22 12L12 2Z" fill="#22c55e" stroke="#14532d" stroke-width="1"/>
-                <path d="M12 2V22M2 12H22" stroke="#14532d" stroke-width="0.5"/>
+                <path d="M12 2L2 12L12 22L22 12L12 2Z" fill="#4ade80" stroke="#166534" stroke-width="1"/>
             </svg>
         </div>
     </div>
@@ -147,18 +129,18 @@
     </audio>
 
     <!-- 🧧 Sampul Raya Intro -->
-    <div id="intro" class="flex flex-col items-center animate-fade-in">
-        <div id="envelopeWrapper" class="envelope-wrapper mb-8">
+    <div id="intro" class="flex flex-col items-center animate-fade-in py-4">
+        <div id="envelopeWrapper" class="envelope-wrapper mb-4 scale-90 sm:scale-100">
             <div id="envelope" class="envelope">
                 <div class="flap"></div>
                 <div class="z-10 text-center">
-                    <p class="text-amber-400 font-bold tracking-widest uppercase text-xs mb-1">Kepada Semua</p>
-                    <span class="text-2xl">🎁</span>
-                    <p class="mt-2 text-white/80 text-[10px] italic">Klik untuk buka</p>
+                    <p class="text-amber-400 font-bold tracking-widest uppercase text-[10px] mb-1">Kepada Semua</p>
+                    <span class="text-xl">🎁</span>
+                    <p class="mt-1 text-white/80 text-[9px] italic">Klik untuk buka</p>
                 </div>
             </div>
         </div>
-        <h2 class="font-festive text-3xl sm:text-4xl text-amber-400 text-center max-w-sm leading-relaxed">
+        <h2 class="font-festive text-2xl sm:text-3xl text-amber-400 text-center max-w-xs leading-relaxed">
             Di hari yang mulia ini,<br>
             kami sekeluarga menyusun sepuluh jari<br>
             memohon ampun dan maaf<br>
@@ -167,23 +149,23 @@
     </div>
 
     <!-- 🎉 Content Raya (Initially Hidden) -->
-    <div id="mainContent" class="hidden-content w-full flex flex-col items-center">
+    <div id="mainContent" class="hidden-content w-full flex flex-col items-center px-2">
         <!-- Header Section -->
-        <header class="text-center mb-6">
-            <h1 class="font-festive text-5xl sm:text-6xl text-amber-400 mb-1 drop-shadow-lg">Selamat Hari Raya</h1>
-            <h2 class="text-xl sm:text-2xl font-light tracking-[0.2em] uppercase text-amber-100/80">Aidilfitri</h2>
-            <div class="mt-4 flex flex-col items-center">
-                <p class="text-base opacity-90 max-w-sm px-4">
-                    Di hari yang mulia ini, kami sekeluarga memohon maaf zahir serta batin 💚
+        <header class="text-center mb-4">
+            <h1 class="font-festive text-4xl sm:text-5xl text-amber-400 mb-0.5 drop-shadow-lg">Selamat Hari Raya</h1>
+            <h2 class="text-lg sm:text-xl font-light tracking-[0.2em] uppercase text-amber-100/80">Aidilfitri</h2>
+            <div class="mt-2 flex flex-col items-center">
+                <p class="text-sm opacity-90 max-w-xs px-2">
+                    Kami sekeluarga memohon maaf zahir serta batin 💚
                 </p>
-                <p class="mt-2 text-lg font-bold text-white border-b border-amber-400 pb-0.5 uppercase tracking-widest">KELUARGA AZHAN</p>
+                <p class="mt-1 text-base font-bold text-white border-b border-amber-400 pb-0.5 uppercase tracking-widest leading-none">KELUARGA AZHAN</p>
             </div>
         </header>
 
-        <div class="mb-6 text-center group">
+        <div class="mb-4 text-center group">
             <div class="relative inline-block">
                 <img src="{{ asset('images/raya-2026.jpg') }}"
-                     class="rounded-2xl shadow-xl w-64 sm:w-80 mx-auto border-2 border-amber-400/20 group-hover:border-amber-400/50 transition-all duration-500"
+                     class="rounded-xl shadow-lg w-56 sm:w-64 mx-auto border border-amber-400/20 group-hover:border-amber-400/50 transition-all duration-500"
                      id="familyImage"
                      alt="Keluarga Azhan">
             </div>
@@ -214,18 +196,18 @@
             </div>
 
             <!-- 💬 Comment Wall -->
-            <div class="space-y-6">
-                <h3 class="text-2xl font-bold text-center text-amber-400 flex items-center justify-center gap-3">
-                    <span class="text-2xl">🎉</span> Ucapan Dari Tetamu
+            <div class="space-y-4">
+                <h3 class="text-xl font-bold text-center text-amber-400 flex items-center justify-center gap-2">
+                    <span class="text-xl">🎉</span> Ucapan Dari Tetamu
                 </h3>
 
-                <div class="grid gap-3">
+                <div class="grid gap-2">
                     @forelse($comments as $comment)
-                        <div class="glass p-4 rounded-xl border-white/5 hover:bg-white/15 transition-all group relative">
-                            <div class="flex justify-between items-start mb-1">
-                                <p class="font-bold text-amber-300 group-hover:text-amber-400 transition-colors text-sm">{{ $comment->name }}</p>
-                                <div class="flex items-center gap-3">
-                                    <span class="text-[9px] uppercase tracking-widest opacity-40">{{ $comment->created_at->diffForHumans() }}</span>
+                        <div class="glass p-3 rounded-lg border-white/5 hover:bg-white/15 transition-all group relative">
+                            <div class="flex justify-between items-start mb-0.5">
+                                <p class="font-bold text-amber-300 group-hover:text-amber-400 transition-colors text-[13px]">{{ $comment->name }}</p>
+                                <div class="flex items-center gap-2">
+                                    <span class="text-[8px] uppercase tracking-widest opacity-40">{{ $comment->created_at->diffForHumans() }}</span>
                                     
                                     @if(session('admin_mode'))
                                         <form method="POST" action="/raya/comments/{{ $comment->id }}" class="inline">
@@ -249,10 +231,10 @@
             </div>
         </main>
 
-        <footer class="mt-12 pb-6 text-center opacity-30 text-[10px]">
+        <footer class="mt-8 pb-4 text-center opacity-30 text-[9px]">
             <p>&copy; 2026 Keluarga Azhan. Built with 💚</p>
             @if(session('admin_mode'))
-                <p class="mt-1 text-emerald-400 font-bold uppercase tracking-tighter">Admin Mode ON</p>
+                <p class="mt-0.5 text-emerald-400 font-bold uppercase tracking-tighter">Admin Mode ON</p>
             @endif
         </footer>
     </div>
