@@ -2,7 +2,7 @@
 <html lang="ms">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Selamat Hari Raya | Keluarga Azhan</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Great+Vibes&display=swap" rel="stylesheet">
@@ -134,6 +134,35 @@
             overflow-y: auto;
         }
         .hidden-content { display: none; opacity: 0; }
+
+        /* Admin Panel Styles */
+        .admin-panel {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 100%;
+            max-width: 400px;
+            height: 100%;
+            background: rgba(6, 78, 59, 0.95);
+            backdrop-filter: blur(20px);
+            z-index: 100;
+            transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: -10px 0 30px rgba(0,0,0,0.5);
+            border-left: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 2rem;
+            overflow-y: auto;
+        }
+        .admin-panel.active { right: 0; }
+        .admin-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 90;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s;
+        }
+        .admin-overlay.active { opacity: 1; pointer-events: auto; }
     </style>
 </head>
 
@@ -208,8 +237,9 @@
         <!-- Main Content Area -->
         <main class="w-full max-w-xl space-y-6">
 
-            <!-- 📝 Form Card -->
-            <div class="glass p-5 sm:p-6 rounded-2xl shadow-xl">
+            <!-- 📝 Greeting Form (Hidden for Admin) -->
+            @if(!session('admin_mode'))
+            <div class="glass p-5 sm:p-6 rounded-2xl shadow-xl animate-fade-in">
                 <form id="commentForm" method="POST" action="/raya" class="space-y-4">
                     @csrf
                     <input type="hidden" name="type" id="submitType" value="ucapan">
@@ -224,20 +254,13 @@
                             class="w-full bg-white/5 border border-white/10 rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-amber-400 focus:bg-white/10 transition-all resize-none placeholder:text-white/30" required maxlength="255"></textarea>
                     </div>
 
-                    <div class="flex flex-col sm:flex-row gap-3">
-                        <button type="submit" onclick="document.getElementById('submitType').value='ucapan'"
-                            class="flex-1 bg-gradient-to-r from-emerald-500 to-green-600 text-white font-extrabold py-3 rounded-xl hover:scale-[1.02] active:scale-100 transition-all shadow-lg uppercase tracking-wider text-sm">
-                            Hantar Ucapan 💚
-                        </button>
-                        @if(session('admin_mode'))
-                        <button type="submit" onclick="document.getElementById('submitType').value='lawak'"
-                            class="flex-1 bg-gradient-to-r from-amber-400 to-amber-600 text-[#064e3b] font-extrabold py-3 rounded-xl hover:scale-[1.02] active:scale-100 transition-all shadow-lg uppercase tracking-wider text-sm">
-                            Hantar Lawak 😆 (Admin)
-                        </button>
-                        @endif
-                    </div>
+                    <button type="submit"
+                        class="w-full bg-gradient-to-r from-emerald-500 to-green-600 text-white font-extrabold py-3 rounded-xl hover:scale-[1.02] active:scale-100 transition-all shadow-lg uppercase tracking-wider text-sm">
+                        Hantar Ucapan 💚
+                    </button>
                 </form>
             </div>
+            @endif
 
             <!-- 😂 Ruang Santai Raya (Random Generator) -->
             <div class="glass p-6 rounded-2xl shadow-xl text-center space-y-4 border-amber-400/30">
@@ -288,11 +311,16 @@
 
         <footer class="mt-8 pb-4 text-center opacity-30 text-[9px]">
             <p>&copy; 2026 Keluarga Azhan. Built with 💚</p>
-            @if(session('admin_mode'))
-                <p class="mt-0.5 text-emerald-400 font-bold uppercase tracking-tighter">Admin Mode ON</p>
-            @endif
         </footer>
     </div>
+
+    @if(session('admin_mode'))
+    <!-- 🚀 Floating Admin Toggle -->
+    <button type="button" onclick="toggleAdminPanel()" 
+        class="fixed bottom-6 right-6 z-50 bg-amber-500 text-[#064e3b] w-14 h-14 rounded-full shadow-2xl flex items-center justify-center text-2xl hover:scale-110 active:scale-95 transition-all border-4 border-[#064e3b]">
+        ⚙️
+    </button>
+    @endif
 
 
     <!-- Scripts -->
@@ -391,37 +419,31 @@
                 const data = await response.json();
 
                 if (data.success) {
-                    // Create new comment element
-                    const wall = type === 'ucapan' ? ucapanWall : lawakWall;
-                    const colorClass = type === 'ucapan' ? 'text-emerald-300' : 'text-amber-300';
-                    const borderClass = type === 'ucapan' ? 'border-white/5' : 'border-amber-400/10 border-l-2 border-l-amber-500/50';
-                    const jokePrefix = type === 'lawak' ? '😂 ' : '';
-
                     const newComment = document.createElement('div');
-                    newComment.className = `glass p-3 rounded-lg ${borderClass} hover:bg-white/15 transition-all group relative animate-fade-in`;
+                    newComment.className = `glass p-3 rounded-lg border-white/5 hover:bg-white/15 transition-all group relative animate-fade-in`;
                     newComment.innerHTML = `
                         <div class="flex justify-between items-start mb-0.5">
-                            <p class="font-bold ${colorClass} group-hover:text-amber-400 transition-colors text-[13px]">${data.comment.name}</p>
+                            <p class="font-bold text-emerald-300 group-hover:text-amber-400 transition-colors text-[13px]">${data.comment.name}</p>
                             <div class="flex items-center gap-2">
                                 <span class="text-[8px] uppercase tracking-widest opacity-40">Sekarang</span>
                             </div>
                         </div>
-                        <p class="text-white/80 text-sm leading-snug">${jokePrefix}${data.comment.message}</p>
+                        <p class="text-white/80 text-sm leading-snug">${data.comment.message}</p>
                     `;
 
                     // Remove empty message if exists
-                    const emptyMsg = wall.querySelector('.italic');
+                    const emptyMsg = ucapanWall.querySelector('.italic');
                     if (emptyMsg) emptyMsg.style.display = 'none';
                     
-                    wall.prepend(newComment);
+                    ucapanWall.prepend(newComment);
                     commentForm.reset();
                     
                     // Success explosion
                     confetti({
-                        particleCount: type === 'ucapan' ? 100 : 50,
+                        particleCount: 100,
                         spread: 70,
                         origin: { y: 0.8 },
-                        colors: type === 'ucapan' ? ['#10b981', '#ffffff'] : ['#fbbf24', '#ffffff']
+                        colors: ['#10b981', '#ffffff']
                     });
                 }
             } catch (error) {
@@ -448,9 +470,9 @@
                 jokeDisplay.classList.remove('hidden');
                 
                 if (data && data.message) {
-                    jokeText.innerHTML = `😂 "${data.message}"<br><span class="text-[10px] text-white/40 not-italic block mt-1">- ${data.name}</span>`;
+                    jokeText.innerHTML = `😂 "${data.message}"`;
                 } else {
-                    jokeText.innerText = "Belum ada lawak lagi. Jom hantar satu! 😆";
+                    jokeText.innerText = "Belum ada lawak lagi. Admin tengah masak lawak... 😆";
                 }
                 
                 // Pop animation
@@ -462,6 +484,14 @@
             } finally {
                 btnText.innerText = "Bagi aku satu lawak!";
             }
+        }
+
+        // ⚙️ Admin Panel Logic
+        function toggleAdminPanel() {
+            const panel = document.getElementById('adminPanel');
+            const overlay = document.getElementById('adminOverlay');
+            panel.classList.toggle('active');
+            overlay.classList.toggle('active');
         }
 
         // 🛡️ Security: Block Right-Click and Common Shortcuts
@@ -480,6 +510,94 @@
             }
         });
     </script>
+
+    @if(session('admin_mode'))
+    <!-- ⚙️ Admin Panel Structure -->
+    <div id="adminOverlay" class="admin-overlay" onclick="toggleAdminPanel()"></div>
+    <div id="adminPanel" class="admin-panel text-white">
+        <div class="flex justify-between items-center mb-8">
+            <h2 class="text-xl font-bold text-amber-400 uppercase tracking-widest">Panel Kawalan Admin</h2>
+            <button onclick="toggleAdminPanel()" class="text-white/50 hover:text-white text-2xl">&times;</button>
+        </div>
+
+        <div class="space-y-8">
+            <!-- Part 1: Tambah Lawak (Strictly Message only) -->
+            <section class="space-y-4">
+                <h3 class="text-xs font-bold text-amber-400 uppercase tracking-widest border-b border-white/10 pb-2 flex items-center gap-2">
+                   <span>😂</span> Tambah Lawak Baru
+                </h3>
+                <form id="adminJokeForm" class="space-y-3">
+                    @csrf
+                    <input type="hidden" name="type" value="lawak">
+                    <div class="space-y-1">
+                        <label class="text-[10px] uppercase text-white/40 font-bold ml-1">Ayat Lawak</label>
+                        <textarea name="message" placeholder="Tulis ayat lawak kat sini..." rows="4"
+                            class="w-full bg-white/5 border border-white/20 rounded-xl p-3 focus:outline-none focus:ring-1 focus:ring-amber-400 transition-all font-body text-sm placeholder:text-white/20" required></textarea>
+                    </div>
+                    <button type="submit" class="w-full bg-amber-500 text-[#064e3b] font-extrabold py-3 rounded-xl text-xs uppercase shadow-lg hover:scale-[1.02] transition-all">
+                        Simpan & Bagi Ayat Lawak ✨
+                    </button>
+                </form>
+            </section>
+
+            <!-- Part 2: Urus Komen / Ucapan (Delete Only) -->
+            <section class="space-y-4 pt-4 border-t border-white/10">
+                <h3 class="text-xs font-bold text-emerald-400 uppercase tracking-widest flex items-center gap-2">
+                   <span>💚</span> Padam Ucapan User
+                </h3>
+                <div class="space-y-2 max-h-[300px] overflow-y-auto pr-2 custom-scrollbar">
+                    @forelse($ucapan as $c)
+                        <div class="bg-white/5 p-3 rounded-lg border border-white/10 flex justify-between items-center group">
+                            <div class="min-w-0 pr-2">
+                                <p class="text-[10px] font-bold text-white/90 truncate">{{ $c->name }}</p>
+                                <p class="text-[11px] text-white/50 truncate italic">"{{ $c->message }}"</p>
+                            </div>
+                            <form method="POST" action="/raya/comments/{{ $c->id }}">
+                                @csrf @method('DELETE')
+                                <button type="submit" class="bg-red-500/20 hover:bg-red-500 text-red-500 hover:text-white px-2 py-1 rounded text-[9px] font-bold uppercase transition-all" onclick="return confirm('Padam ucapan ini?')">Padam</button>
+                            </form>
+                        </div>
+                    @empty
+                        <div class="text-center py-8 opacity-20 text-[10px] italic">Tiada ucapan tersimpan...</div>
+                    @endforelse
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <script>
+        // Admin Joke Submission
+        const adminJokeForm = document.getElementById('adminJokeForm');
+        adminJokeForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const submitBtn = adminJokeForm.querySelector('button');
+            const originalText = submitBtn.innerText;
+            submitBtn.disabled = true;
+            submitBtn.innerText = 'Menyimpan...';
+
+            try {
+                const response = await fetch('/raya', {
+                    method: 'POST',
+                    body: new FormData(adminJokeForm),
+                    headers: { 'X-Requested-With': 'XMLHttpRequest', 'Accept': 'application/json' }
+                });
+                const data = await response.json();
+                if (data.success) {
+                    alert('Lawak berjaya ditambah!');
+                    adminJokeForm.reset();
+                    // Optional: trigger confetti
+                    confetti({ particleCount: 50, spread: 60, origin: { x: 0.8, y: 0.5 } });
+                }
+            } catch (err) {
+                alert('Gagal simpan lawak.');
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerText = originalText;
+            }
+        });
+    </script>
+    @endif
+
     </div>
 </body>
 </html>

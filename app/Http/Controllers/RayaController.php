@@ -16,18 +16,25 @@ class RayaController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
+        $rules = [
             'name' => 'required|max:50',
             'message' => 'required|max:255',
             'type' => 'required|in:ucapan,lawak',
-        ]);
+        ];
+
+        // For jokes, if admin is logged in, name is optional
+        if ($request->type === 'lawak' && session('admin_mode')) {
+            $rules['name'] = 'nullable|max:50';
+        }
+
+        $request->validate($rules);
 
         if ($request->type === 'lawak' && !session('admin_mode')) {
             return response()->json(['success' => false, 'message' => 'Hanya Admin boleh hantar lawak.'], 403);
         }
 
         $comment = Comment::create([
-            'name' => $request->name,
+            'name' => ($request->type === 'lawak') ? null : $request->name,
             'message' => $request->message,
             'type' => $request->type,
         ]);
