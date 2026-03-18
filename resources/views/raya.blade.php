@@ -122,14 +122,15 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center; /* Centers intro */
+            justify-content: center; /* Centers intro vertically */
             padding: 1rem;
             position: relative;
             z-index: 10;
-            transition: justify-content 0.5s;
+            transition: all 0.5s ease-in-out;
         }
         .is-open .main-wrapper {
             padding-top: 2rem;
+            justify-content: flex-start; /* Move up when open */
             overflow-y: auto;
         }
         .hidden-content { display: none; opacity: 0; }
@@ -211,55 +212,102 @@
             <div class="glass p-5 sm:p-6 rounded-2xl shadow-xl">
                 <form id="commentForm" method="POST" action="/raya" class="space-y-4">
                     @csrf
+                    <input type="hidden" name="type" id="submitType" value="ucapan">
+                    
                     <div class="space-y-1">
                         <input type="text" name="name" placeholder="Nama Anda" 
-                            class="w-full bg-white/5 border border-white/10 rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-amber-400 focus:bg-white/10 transition-all" required maxlength="50">
+                            class="w-full bg-white/5 border border-white/10 rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-amber-400 focus:bg-white/10 transition-all placeholder:text-white/30" required maxlength="50">
                     </div>
 
                     <div class="space-y-1">
-                        <textarea name="message" placeholder="Tuliskan ucapan raya anda di sini..." rows="3"
-                            class="w-full bg-white/5 border border-white/10 rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-amber-400 focus:bg-white/10 transition-all resize-none" required maxlength="255"></textarea>
+                        <textarea id="commentMessage" name="message" placeholder="Tuliskan ucapan raya anda di sini..." rows="3"
+                            class="w-full bg-white/5 border border-white/10 rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-amber-400 focus:bg-white/10 transition-all resize-none placeholder:text-white/30" required maxlength="255"></textarea>
                     </div>
 
-                    <button type="submit"
-                        class="w-full bg-gradient-to-r from-amber-400 to-amber-600 text-[#064e3b] font-extrabold py-3 rounded-xl hover:scale-[1.02] active:scale-100 transition-all shadow-lg uppercase tracking-wider">
-                        Hantar Ucapan
-                    </button>
+                    <div class="flex flex-col sm:flex-row gap-3">
+                        <button type="submit" onclick="document.getElementById('submitType').value='ucapan'"
+                            class="flex-1 bg-gradient-to-r from-emerald-500 to-green-600 text-white font-extrabold py-3 rounded-xl hover:scale-[1.02] active:scale-100 transition-all shadow-lg uppercase tracking-wider text-sm">
+                            Hantar Ucapan 💚
+                        </button>
+                        <button type="submit" onclick="document.getElementById('submitType').value='lawak'"
+                            class="flex-1 bg-gradient-to-r from-amber-400 to-amber-600 text-[#064e3b] font-extrabold py-3 rounded-xl hover:scale-[1.02] active:scale-100 transition-all shadow-lg uppercase tracking-wider text-sm">
+                            Hantar Lawak 😆
+                        </button>
+                    </div>
                 </form>
             </div>
 
-            <!-- 💬 Comment Wall -->
-            <div class="space-y-4">
-                <h3 class="text-xl font-bold text-center text-amber-400 flex items-center justify-center gap-2">
-                    <span class="text-xl">💌</span> Titipan Ucapan dari Saudara & Sahabat
-                </h3>
+            <!-- 😂 Ruang Santai Raya (Random Generator) -->
+            <div class="glass p-6 rounded-2xl shadow-xl text-center space-y-4 border-amber-400/30">
+                <h3 class="font-festive text-3xl text-amber-400">Ruang Santai Raya 😂</h3>
+                <p class="text-white/70 text-sm">Klik butang bawah kalau nak gelak surprize!</p>
+                
+                <div id="jokeDisplay" class="min-h-[60px] flex items-center justify-center p-4 bg-white/5 rounded-xl border border-white/5 italic text-amber-100 hidden">
+                    <p id="jokeText"></p>
+                </div>
 
-                <div id="commentWall" class="grid gap-2">
-                    @forelse($comments as $comment)
-                        <div class="glass p-3 rounded-lg border-white/5 hover:bg-white/15 transition-all group relative">
-                            <div class="flex justify-between items-start mb-0.5">
-                                <p class="font-bold text-amber-300 group-hover:text-amber-400 transition-colors text-[13px]">{{ $comment->name }}</p>
-                                <div class="flex items-center gap-2">
-                                    <span class="text-[8px] uppercase tracking-widest opacity-40">{{ $comment->created_at->diffForHumans() }}</span>
-                                    
-                                    @if(session('admin_mode'))
-                                        <form method="POST" action="/raya/comments/{{ $comment->id }}" class="inline">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="text-red-400 hover:text-red-300 text-[10px] font-bold uppercase tracking-tighter" onclick="return confirm('Padam komen ni?')">
-                                                [Delete]
-                                            </button>
-                                        </form>
-                                    @endif
+                <button onclick="getLawak()"
+                    class="bg-white/10 hover:bg-white/20 text-amber-400 border border-amber-400/50 px-6 py-2 rounded-full transition-all flex items-center gap-2 mx-auto active:scale-95">
+                    🎲 <span id="btnJokeText">Bagi aku satu lawak!</span>
+                </button>
+            </div>
+
+            <!-- 💬 Comment Wall -->
+            <div class="space-y-8">
+                <!-- Ucapan Section -->
+                <div class="space-y-4">
+                    <h3 class="text-xl font-bold text-emerald-400 flex items-center gap-2">
+                        <span>💚</span> Ucapan Raya
+                    </h3>
+                    <div id="ucapanWall" class="grid gap-2">
+                        @forelse($ucapan as $comment)
+                            <div class="glass p-3 rounded-lg border-white/5 hover:bg-white/15 transition-all group relative">
+                                <div class="flex justify-between items-start mb-0.5">
+                                    <p class="font-bold text-emerald-300 group-hover:text-emerald-400 transition-colors text-[13px]">{{ $comment->name }}</p>
+                                    <div class="flex items-center gap-2">
+                                        <span class="text-[8px] uppercase tracking-widest opacity-40">{{ $comment->created_at->diffForHumans() }}</span>
+                                        @if(session('admin_mode'))
+                                            <form method="POST" action="/raya/comments/{{ $comment->id }}" class="inline">
+                                                @csrf @method('DELETE')
+                                                <button type="submit" class="text-red-400 hover:text-red-300 text-[10px] uppercase font-bold" onclick="return confirm('Padam?')">[x]</button>
+                                            </form>
+                                        @endif
+                                    </div>
                                 </div>
+                                <p class="text-white/80 text-sm leading-snug">{{ $comment->message }}</p>
                             </div>
-                            <p class="text-white/80 text-sm leading-snug">{{ $comment->message }}</p>
-                        </div>
-                    @empty
-                        <div class="text-center py-10 opacity-50 italic">
-                            Belum ada ucapan lagi. Jadilah yang pertama!
-                        </div>
-                    @endforelse
+                        @empty
+                            <div class="text-center py-6 opacity-40 italic text-sm">Tiada ucapan lagi...</div>
+                        @endforelse
+                    </div>
+                </div>
+
+                <!-- Lawak Section -->
+                <div class="space-y-4">
+                    <h3 class="text-xl font-bold text-amber-400 flex items-center gap-2">
+                        <span>😆</span> Ruang Santai Raya
+                    </h3>
+                    <div id="lawakWall" class="grid gap-2">
+                        @forelse($lawak as $comment)
+                            <div class="glass p-3 rounded-lg border-amber-400/10 hover:bg-white/15 transition-all group relative border-l-2 border-l-amber-500/50">
+                                <div class="flex justify-between items-start mb-0.5">
+                                    <p class="font-bold text-amber-300 group-hover:text-amber-400 transition-colors text-[13px]">{{ $comment->name }}</p>
+                                    <div class="flex items-center gap-2">
+                                        <span class="text-[8px] uppercase tracking-widest opacity-40">{{ $comment->created_at->diffForHumans() }}</span>
+                                        @if(session('admin_mode'))
+                                            <form method="POST" action="/raya/comments/{{ $comment->id }}" class="inline">
+                                                @csrf @method('DELETE')
+                                                <button type="submit" class="text-red-400 hover:text-red-300 text-[10px] uppercase font-bold" onclick="return confirm('Padam?')">[x]</button>
+                                            </form>
+                                        @endif
+                                    </div>
+                                </div>
+                                <p class="text-white/80 text-sm leading-snug">😂 {{ $comment->message }}</p>
+                            </div>
+                        @empty
+                            <div class="text-center py-6 opacity-40 italic text-sm">Ruang santai masih kosong...</div>
+                        @endforelse
+                    </div>
                 </div>
             </div>
         </main>
@@ -332,14 +380,16 @@
 
         // 🚀 AJAX Form Submission
         const commentForm = document.getElementById('commentForm');
-        const commentWall = document.getElementById('commentWall');
+        const ucapanWall = document.getElementById('ucapanWall');
+        const lawakWall = document.getElementById('lawakWall');
 
         commentForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             
             const formData = new FormData(commentForm);
-            const submitBtn = commentForm.querySelector('button[type="submit"]');
+            const submitBtn = e.submitter; // Get the specific button pressed
             const originalText = submitBtn.innerText;
+            const type = document.getElementById('submitType').value;
             
             submitBtn.disabled = true;
             submitBtn.innerText = 'Menghantar...';
@@ -368,40 +418,77 @@
 
                 if (data.success) {
                     // Create new comment element
+                    const wall = type === 'ucapan' ? ucapanWall : lawakWall;
+                    const colorClass = type === 'ucapan' ? 'text-emerald-300' : 'text-amber-300';
+                    const borderClass = type === 'ucapan' ? 'border-white/5' : 'border-amber-400/10 border-l-2 border-l-amber-500/50';
+                    const jokePrefix = type === 'lawak' ? '😂 ' : '';
+
                     const newComment = document.createElement('div');
-                    newComment.className = 'glass p-3 rounded-lg border-white/5 hover:bg-white/15 transition-all group relative animate-fade-in';
+                    newComment.className = `glass p-3 rounded-lg ${borderClass} hover:bg-white/15 transition-all group relative animate-fade-in`;
                     newComment.innerHTML = `
                         <div class="flex justify-between items-start mb-0.5">
-                            <p class="font-bold text-amber-300 group-hover:text-amber-400 transition-colors text-[13px]">${data.comment.name}</p>
+                            <p class="font-bold ${colorClass} group-hover:text-amber-400 transition-colors text-[13px]">${data.comment.name}</p>
                             <div class="flex items-center gap-2">
-                                <span class="text-[8px] uppercase tracking-widest opacity-40">${data.comment.created_at}</span>
+                                <span class="text-[8px] uppercase tracking-widest opacity-40">Sekarang</span>
                             </div>
                         </div>
-                        <p class="text-white/80 text-sm leading-snug">${data.comment.message}</p>
+                        <p class="text-white/80 text-sm leading-snug">${jokePrefix}${data.comment.message}</p>
                     `;
 
-                    // Prepend and hide empty message if exists
-                    const emptyMsg = commentWall.querySelector('.italic');
+                    // Remove empty message if exists
+                    const emptyMsg = wall.querySelector('.italic');
                     if (emptyMsg) emptyMsg.style.display = 'none';
                     
-                    commentWall.prepend(newComment);
+                    wall.prepend(newComment);
                     commentForm.reset();
                     
-                    // Small success explosion
+                    // Success explosion
                     confetti({
-                        particleCount: 40,
+                        particleCount: type === 'ucapan' ? 100 : 50,
                         spread: 70,
-                        origin: { y: 0.8 }
+                        origin: { y: 0.8 },
+                        colors: type === 'ucapan' ? ['#10b981', '#ffffff'] : ['#fbbf24', '#ffffff']
                     });
                 }
             } catch (error) {
-                console.error('Error submitting comment:', error);
+                console.error('Error submitting:', error);
                 alert('Maaf, ada masalah teknikal. Cuba lagi.');
             } finally {
                 submitBtn.disabled = false;
                 submitBtn.innerText = originalText;
             }
         });
+
+        // 🎲 Random Lawak Logic
+        async function getLawak() {
+            const jokeDisplay = document.getElementById('jokeDisplay');
+            const jokeText = document.getElementById('jokeText');
+            const btnText = document.getElementById('btnJokeText');
+            
+            btnText.innerText = "Mencari...";
+            
+            try {
+                const response = await fetch('/random-lawak');
+                const data = await response.json();
+                
+                jokeDisplay.classList.remove('hidden');
+                
+                if (data && data.message) {
+                    jokeText.innerHTML = `😂 "${data.message}"<br><span class="text-[10px] text-white/40 not-italic block mt-1">- ${data.name}</span>`;
+                } else {
+                    jokeText.innerText = "Belum ada lawak lagi. Jom hantar satu! 😆";
+                }
+                
+                // Pop animation
+                jokeDisplay.style.transform = 'scale(0.95)';
+                setTimeout(() => jokeDisplay.style.transform = 'scale(1)', 100);
+                
+            } catch (error) {
+                console.error('Error fetching joke:', error);
+            } finally {
+                btnText.innerText = "Bagi aku satu lawak!";
+            }
+        }
 
         // 🛡️ Security: Block Right-Click and Common Shortcuts
         document.addEventListener('contextmenu', (e) => e.preventDefault());

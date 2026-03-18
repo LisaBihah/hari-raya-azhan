@@ -9,8 +9,9 @@ class RayaController extends Controller
 {
     public function index()
     {
-        $comments = Comment::latest()->get();
-        return view('raya', compact('comments'));
+        $ucapan = Comment::where('type', 'ucapan')->latest()->get();
+        $lawak = Comment::where('type', 'lawak')->latest()->get();
+        return view('raya', compact('ucapan', 'lawak'));
     }
 
     public function store(Request $request)
@@ -18,11 +19,13 @@ class RayaController extends Controller
         $request->validate([
             'name' => 'required|max:50',
             'message' => 'required|max:255',
+            'type' => 'required|in:ucapan,lawak',
         ]);
 
         $comment = Comment::create([
             'name' => $request->name,
             'message' => $request->message,
+            'type' => $request->type,
         ]);
 
         if ($request->ajax()) {
