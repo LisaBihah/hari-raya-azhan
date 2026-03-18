@@ -4,10 +4,15 @@
 sed -i "s/LISTEN_PORT/${PORT:-80}/g" /etc/nginx/sites-available/default
 
 # Configure PHP-FPM to listen on a socket
-sed -i 's|listen = 9000|listen = /var/run/php-fpm.sock|' /usr/local/etc/php-fpm.d/www.conf
-sed -i 's|;listen.owner = www-data|listen.owner = www-data|' /usr/local/etc/php-fpm.d/www.conf
-sed -i 's|;listen.group = www-data|listen.group = www-data|' /usr/local/etc/php-fpm.d/www.conf
-sed -i 's|;listen.mode = 0660|listen.mode = 0660|' /usr/local/etc/php-fpm.d/www.conf
+# We use the standard path for PHP-FPM config in the official image
+FPM_CONF="/usr/local/etc/php-fpm.d/www.conf"
+if [ -f "$FPM_CONF" ]; then
+    sed -i 's|listen = 127.0.0.1:9000|listen = /var/run/php-fpm.sock|' "$FPM_CONF"
+    sed -i 's|listen = 9000|listen = /var/run/php-fpm.sock|' "$FPM_CONF"
+    echo "listen.owner = www-data" >> "$FPM_CONF"
+    echo "listen.group = www-data" >> "$FPM_CONF"
+    echo "listen.mode = 0660" >> "$FPM_CONF"
+fi
 
 # Create the SQLite database file if it doesn't exist
 mkdir -p /var/www/database
