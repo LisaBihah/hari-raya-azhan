@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Selamat Hari Raya | Keluarga Azhan</title>
+    <title>Selamat Hari Raya | Keluarga Azhan & Nor Asidah</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Great+Vibes&display=swap" rel="stylesheet">
     <!-- Confetti JS -->
@@ -221,7 +221,7 @@
                 <p class="text-sm opacity-90 max-w-xs px-2">
                     Kami sekeluarga memohon maaf zahir dan batin 💚
                 </p>
-                <p class="mt-1 text-base font-bold text-white border-b border-amber-400 pb-0.5 uppercase tracking-widest leading-none">KELUARGA AZHAN</p>
+                <p class="mt-1 text-base font-bold text-white border-b border-amber-400 pb-0.5 uppercase tracking-widest leading-none">KELUARGA AZHAN & NOR ASIDAH</p>
             </div>
         </header>
 
@@ -230,7 +230,7 @@
                 <img src="{{ asset('images/raya-2026.jpg') }}"
                      class="rounded-xl shadow-lg w-56 sm:w-64 mx-auto border border-amber-400/20 group-hover:border-amber-400/50 transition-all duration-500"
                      id="familyImage"
-                     alt="Keluarga Azhan">
+                     alt="Keluarga Azhan & Nor Asidah">
             </div>
         </div>
 
@@ -296,7 +296,7 @@
         </main>
 
         <footer class="mt-8 pb-4 text-center opacity-30 text-[9px]">
-            <p>&copy; 2026 Keluarga Azhan. Built with 💚</p>
+            <p>&copy; 2026 Keluarga Azhan & Nor Asidah. Built with 💚</p>
         </footer>
     </div>
 
