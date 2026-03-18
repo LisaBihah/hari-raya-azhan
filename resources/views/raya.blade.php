@@ -118,33 +118,36 @@
         }
         /* Mobile No-Scroll Setup */
         html, body {
-            height: 100%;
             margin: 0;
             padding: 0;
-            overflow: hidden;
-        }
-        .scrollable-area {
             height: 100%;
-            width: 100%;
-            overflow-y: hidden;
+        }
+        body.is-locked {
+            overflow: hidden;
+            height: 100dvh;
+        }
+        .main-wrapper {
+            min-height: 100dvh;
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
+            justify-content: center; /* Centers intro */
+            padding: 1rem;
             position: relative;
             z-index: 10;
+            transition: justify-content 0.5s;
         }
-        .is-open .scrollable-area {
-            overflow-y: auto;
+        .is-open .main-wrapper {
             justify-content: flex-start;
-            padding-top: 1rem;
+            padding-top: 2rem;
+            overflow-y: auto;
         }
         .hidden-content { display: none; opacity: 0; }
     </style>
 </head>
 
-<body class="font-body bg-[#064e3b] bg-gradient-to-br from-[#064e3b] to-[#022c22] text-white">
-    <div class="scrollable-area p-2 sm:p-4">
+<body class="font-body bg-[#064e3b] bg-gradient-to-br from-[#064e3b] to-[#022c22] text-white is-locked">
+    <div class="main-wrapper" id="pageWrapper">
 
     <div class="blob top-[-100px] right-[-100px]"></div>
     <div class="blob bottom-[-150px] left-[-150px] !bg-green-400"></div>
@@ -314,7 +317,8 @@
 
             setTimeout(() => {
                 intro.style.display = 'none';
-                document.body.classList.add('is-open'); // Enable scrolling
+                document.body.classList.remove('is-locked');
+                document.body.classList.add('is-open');
                 
                 // Show content with fade effect
                 mainContent.style.display = 'flex';
