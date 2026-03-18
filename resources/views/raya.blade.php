@@ -119,29 +119,27 @@
         /* Mobile No-Scroll Setup */
         html, body {
             height: 100%;
-            overflow: hidden; /* Lock main scroll */
-            position: fixed;
-            width: 100%;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
         }
         .scrollable-area {
-            height: 100vh;
-            overflow-y: hidden; /* No scroll initially */
-            -webkit-overflow-scrolling: touch;
+            height: 100%;
             width: 100%;
+            overflow-y: hidden;
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center; /* Center intro */
+            justify-content: center;
+            position: relative;
+            z-index: 10;
         }
         .is-open .scrollable-area {
             overflow-y: auto;
-            justify-content: flex-start; /* Align to top when open */
-            padding-top: 2rem;
+            justify-content: flex-start;
+            padding-top: 1rem;
         }
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
+        .hidden-content { display: none; opacity: 0; }
     </style>
 </head>
 
@@ -195,7 +193,7 @@
     </div>
 
     <!-- 🎉 Content Raya (Initially Hidden) -->
-    <div id="mainContent" class="hidden-content w-full flex flex-col items-center px-2 pb-20">
+    <div id="mainContent" class="hidden-content w-full flex flex-col items-center px-4 pb-24">
         <!-- Header Section -->
         <header class="text-center mb-4">
             <h1 class="font-festive text-4xl sm:text-5xl text-amber-400 mb-0.5 drop-shadow-lg">Selamat Hari Raya</h1>
