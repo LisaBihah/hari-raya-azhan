@@ -169,31 +169,31 @@
     <!-- 🎉 Content Raya (Initially Hidden) -->
     <div id="mainContent" class="hidden-content w-full flex flex-col items-center">
         <!-- Header Section -->
-        <header class="text-center mb-10">
-            <h1 class="font-festive text-6xl sm:text-7xl text-amber-400 mb-2 drop-shadow-lg">Selamat Hari Raya</h1>
-            <h2 class="text-2xl sm:text-3xl font-light tracking-[0.3em] uppercase text-amber-100/80">Aidilfitri</h2>
-            <div class="mt-6 flex flex-col items-center">
-                <p class="text-lg opacity-90 max-w-md">
-                    Di hari yang mulia ini, kami sekeluarga menyusun sepuluh jari memohon ampun dan maaf zahir serta batin 💚
+        <header class="text-center mb-6">
+            <h1 class="font-festive text-5xl sm:text-6xl text-amber-400 mb-1 drop-shadow-lg">Selamat Hari Raya</h1>
+            <h2 class="text-xl sm:text-2xl font-light tracking-[0.2em] uppercase text-amber-100/80">Aidilfitri</h2>
+            <div class="mt-4 flex flex-col items-center">
+                <p class="text-base opacity-90 max-w-sm px-4">
+                    Di hari yang mulia ini, kami sekeluarga memohon maaf zahir serta batin 💚
                 </p>
-                <p class="mt-4 text-xl font-bold text-white border-b-2 border-amber-400 pb-1 uppercase tracking-widest">KELUARGA AZHAN</p>
+                <p class="mt-2 text-lg font-bold text-white border-b border-amber-400 pb-0.5 uppercase tracking-widest">KELUARGA AZHAN</p>
             </div>
         </header>
 
         <!-- 🥘 Ketupat Image -->
-        <div class="mb-10 text-center group">
+        <div class="mb-6 text-center group">
             <div class="relative inline-block">
                 <img src="https://upload.wikimedia.org/wikipedia/commons/3/3a/Ketupat.jpg"
-                     class="rounded-3xl shadow-2xl w-64 sm:w-72 mx-auto border-4 border-amber-400/20 group-hover:border-amber-400/50 transition-all duration-500"
+                     class="rounded-2xl shadow-xl w-48 sm:w-56 mx-auto border-2 border-amber-400/20 group-hover:border-amber-400/50 transition-all duration-500"
                      alt="Ketupat Raya">
-                <div class="absolute -bottom-4 left-1/2 -translate-x-1/2 glass px-6 py-2 rounded-full whitespace-nowrap shadow-xl">
-                    <p class="text-sm font-bold text-amber-100">Jom makan-makan 😋🍽️</p>
+                <div class="absolute -bottom-3 left-1/2 -translate-x-1/2 glass px-4 py-1 rounded-full whitespace-nowrap shadow-lg">
+                    <p class="text-[10px] font-bold text-amber-100 uppercase tracking-tighter">Jom makan-makan 😋🍽️</p>
                 </div>
             </div>
         </div>
 
         <!-- Main Content Area -->
-        <main class="w-full max-w-2xl space-y-8">
+        <main class="w-full max-w-xl space-y-6">
             
             @if(session('success'))
                 <div class="bg-emerald-500/20 border border-emerald-500 text-emerald-300 p-4 rounded-xl text-center shadow-xl">
@@ -202,27 +202,19 @@
             @endif
 
             <!-- 📝 Form Card -->
-            <div class="glass p-6 sm:p-8 rounded-3xl shadow-2xl">
-                <h3 class="text-xl font-bold mb-6 text-center flex items-center justify-center gap-3">
-                    <span class="text-2xl">💬</span> Tinggalkan Ucapan Anda
-                </h3>
-
-                <form method="POST" action="/raya" class="space-y-4">
+            <div class="glass p-5 sm:p-6 rounded-2xl shadow-xl">
+                <form method="POST" action="/raya" class="space-y-3">
                     @csrf
-                    <div class="space-y-1">
+                    <div class="flex flex-col sm:flex-row gap-3">
                         <input type="text" name="name" placeholder="Nama Anda" 
-                            class="w-full bg-white/5 border border-white/10 rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-amber-400 focus:bg-white/10 transition-all" required maxlength="50">
+                            class="flex-1 bg-white/5 border border-white/10 rounded-xl p-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400 focus:bg-white/10 transition-all" required maxlength="50">
+                        <button type="submit"
+                            class="sm:w-32 bg-gradient-to-r from-amber-400 to-amber-600 text-[#064e3b] font-extrabold py-2.5 rounded-xl hover:scale-[1.02] active:scale-100 transition-all shadow-lg uppercase text-xs tracking-wider">
+                            Hantar
+                        </button>
                     </div>
-
-                    <div class="space-y-1">
-                        <textarea name="message" placeholder="Tuliskan ucapan raya anda di sini..." rows="4"
-                            class="w-full bg-white/5 border border-white/10 rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-amber-400 focus:bg-white/10 transition-all resize-none" required maxlength="255"></textarea>
-                    </div>
-
-                    <button type="submit"
-                        class="w-full bg-gradient-to-r from-amber-400 to-amber-600 text-[#064e3b] font-extrabold py-3 rounded-xl hover:scale-[1.02] active:scale-100 transition-all shadow-lg uppercase tracking-wider">
-                        Hantar Ucapan
-                    </button>
+                    <textarea name="message" placeholder="Tuliskan ucapan raya anda di sini..." rows="2"
+                        class="w-full bg-white/5 border border-white/10 rounded-xl p-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400 focus:bg-white/10 transition-all resize-none" required maxlength="255"></textarea>
                 </form>
             </div>
 
@@ -232,14 +224,26 @@
                     <span class="text-2xl">🎉</span> Ucapan Dari Tetamu
                 </h3>
 
-                <div class="grid gap-4">
+                <div class="grid gap-3">
                     @forelse($comments as $comment)
-                        <div class="glass p-5 rounded-2xl border-white/5 hover:bg-white/15 transition-all group">
-                            <div class="flex justify-between items-start mb-2">
-                                <p class="font-extrabold text-amber-300 group-hover:text-amber-400 transition-colors">{{ $comment->name }}</p>
-                                <span class="text-[10px] uppercase tracking-widest opacity-50">{{ $comment->created_at->diffForHumans() }}</span>
+                        <div class="glass p-4 rounded-xl border-white/5 hover:bg-white/15 transition-all group relative">
+                            <div class="flex justify-between items-start mb-1">
+                                <p class="font-bold text-amber-300 group-hover:text-amber-400 transition-colors text-sm">{{ $comment->name }}</p>
+                                <div class="flex items-center gap-3">
+                                    <span class="text-[9px] uppercase tracking-widest opacity-40">{{ $comment->created_at->diffForHumans() }}</span>
+                                    
+                                    @if(session('admin_mode'))
+                                        <form method="POST" action="/raya/comments/{{ $comment->id }}" class="inline">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="text-red-400 hover:text-red-300 text-[10px] font-bold uppercase tracking-tighter" onclick="return confirm('Padam komen ni?')">
+                                                [Delete]
+                                            </button>
+                                        </form>
+                                    @endif
+                                </div>
                             </div>
-                            <p class="text-white/90 leading-relaxed">{{ $comment->message }}</p>
+                            <p class="text-white/80 text-sm leading-snug">{{ $comment->message }}</p>
                         </div>
                     @empty
                         <div class="text-center py-10 opacity-50 italic">
@@ -250,8 +254,11 @@
             </div>
         </main>
 
-        <footer class="mt-20 pb-10 text-center opacity-40 text-xs">
-            <p>&copy; 2026 Keluarga Azhan. Built with 💚 for Raya.</p>
+        <footer class="mt-12 pb-6 text-center opacity-30 text-[10px]">
+            <p>&copy; 2026 Keluarga Azhan. Built with 💚</p>
+            @if(session('admin_mode'))
+                <p class="mt-1 text-emerald-400 font-bold uppercase tracking-tighter">Admin Mode ON</p>
+            @endif
         </footer>
     </div>
 

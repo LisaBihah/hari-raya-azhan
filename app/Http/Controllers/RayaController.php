@@ -27,4 +27,26 @@ class RayaController extends Controller
 
         return redirect('/raya')->with('success', 'Ucapan anda telah dihantar! Selamat Hari Raya!');
     }
+
+    public function adminLogin($secret)
+    {
+        // Simple secret key check
+        if ($secret === 'azhan-raya-2026') {
+            session(['admin_mode' => true]);
+            return redirect('/raya')->with('success', 'Admin Mode Active 🔓');
+        }
+        
+        return redirect('/raya');
+    }
+
+    public function destroy($id)
+    {
+        if (session('admin_mode')) {
+            $comment = Comment::findOrFail($id);
+            $comment->delete();
+            return redirect('/raya')->with('success', 'Komen telah dipadam.');
+        }
+
+        return redirect('/raya');
+    }
 }
