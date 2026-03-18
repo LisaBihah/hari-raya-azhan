@@ -20,12 +20,6 @@ RUN docker-php-ext-install pdo_mysql pdo_sqlite mbstring exif pcntl bcmath gd
 # Enable Apache mod_rewrite
 RUN a2enmod rewrite
 
-# CRITICAL FIX: Ensure ONLY mpm_prefork is loaded. 
-# We delete any other mpm load files that might have been enabled by default.
-RUN find /etc/apache2/mods-enabled -name "mpm_*.load" ! -name "mpm_prefork.load" -delete && \
-    find /etc/apache2/mods-enabled -name "mpm_*.conf" ! -name "mpm_prefork.conf" -delete && \
-    a2enmod mpm_prefork
-
 # Set working directory
 WORKDIR /var/www/html
 
