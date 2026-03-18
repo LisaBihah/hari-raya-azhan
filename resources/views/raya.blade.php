@@ -164,7 +164,7 @@
 
         <div class="mb-4 text-center group">
             <div class="relative inline-block">
-                <img src="{{ asset('images/raya-2026.jpg') }}"
+                <img src="{{ asset('images/raya-2026.jpg.jpeg') }}"
                      class="rounded-xl shadow-lg w-56 sm:w-64 mx-auto border border-amber-400/20 group-hover:border-amber-400/50 transition-all duration-500"
                      id="familyImage"
                      alt="Keluarga Azhan">
@@ -198,7 +198,7 @@
             <!-- 💬 Comment Wall -->
             <div class="space-y-4">
                 <h3 class="text-xl font-bold text-center text-amber-400 flex items-center justify-center gap-2">
-                    <span class="text-xl">🎉</span> Ucapan Dari Tetamu
+                    <span class="text-xl">💌</span> Titipan Ucapan dari Saudara & Sahabat
                 </h3>
 
                 <div class="grid gap-2">
