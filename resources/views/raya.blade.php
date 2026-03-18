@@ -95,7 +95,7 @@
             z-index: 1;
         }
 
-        .hidden-content { display: none; opacity: 0; transition: opacity 1s ease-in; }
+        .hidden-content { display: none; opacity: 0; }
 
         /* Floating Animation */
         @keyframes float {
@@ -124,10 +124,20 @@
             width: 100%;
         }
         .scrollable-area {
-            height: 100%;
-            overflow-y: auto;
+            height: 100vh;
+            overflow-y: hidden; /* No scroll initially */
             -webkit-overflow-scrolling: touch;
             width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center; /* Center intro */
+        }
+        .is-open .scrollable-area {
+            overflow-y: auto;
+            justify-content: flex-start; /* Align to top when open */
+            padding-top: 2rem;
+        }
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -306,6 +316,7 @@
 
             setTimeout(() => {
                 intro.style.display = 'none';
+                document.body.classList.add('is-open'); // Enable scrolling
                 
                 // Show content with fade effect
                 mainContent.style.display = 'flex';
@@ -314,7 +325,6 @@
                 }, 50);
 
                 musicControl.classList.remove('hidden');
-                document.body.classList.remove('justify-center'); // Switch to top alignment
                 
                 // Play music
                 audio.play().then(() => {
