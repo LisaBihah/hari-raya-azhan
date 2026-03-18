@@ -17,8 +17,9 @@ RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 # Install PHP extensions
 RUN docker-php-ext-install pdo_mysql pdo_sqlite mbstring exif pcntl bcmath gd
 
-# Fix Apache MPM conflict: Disable event and enable prefork (required for PHP)
-RUN a2dismod mpm_event && a2enmod mpm_prefork
+# Forcefully resolve Apache MPM conflict: Disable event and enable prefork
+RUN rm -f /etc/apache2/mods-enabled/mpm_event.load /etc/apache2/mods-enabled/mpm_event.conf && \
+    a2enmod mpm_prefork
 
 # Enable Apache mod_rewrite
 RUN a2enmod rewrite
