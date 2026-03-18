@@ -97,6 +97,16 @@
         .delay-1 { animation-delay: 1s; }
         .delay-2 { animation-delay: 2s; }
         .delay-3 { animation-delay: 3s; }
+        /* Screenshot/Copy Discouragement */
+        body {
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+        img {
+            -webkit-touch-callout: none;
+        }
     </style>
 </head>
 
@@ -326,6 +336,21 @@
                 musicIcon.innerText = '🎵';
             }
             isPlaying = !isPlaying;
+        });
+
+        // 🛡️ Security: Block Right-Click and Common Shortcuts
+        document.addEventListener('contextmenu', (e) => e.preventDefault());
+
+        document.addEventListener('keydown', (e) => {
+            // Block Ctrl+S, Ctrl+U, Ctrl+P, Ctrl+Shift+I, F12
+            if (
+                (e.ctrlKey && (e.key === 's' || e.key === 'u' || e.key === 'p')) ||
+                (e.ctrlKey && e.shiftKey && (e.key === 'i' || e.key === 'j' || e.key === 'c')) ||
+                e.key === 'F12' || e.key === 'PrintScreen'
+            ) {
+                e.preventDefault();
+                return false;
+            }
         });
     </script>
 </body>
