@@ -136,7 +136,7 @@
     </style>
 </head>
 
-<body class="font-body bg-[#064e3b] bg-gradient-to-br from-[#064e3b] to-[#022c22] text-white {{ session('card_opened') ? 'is-open' : 'is-locked' }}">
+<body class="font-body bg-[#064e3b] bg-gradient-to-br from-[#064e3b] to-[#022c22] text-white is-locked">
     <div class="main-wrapper" id="pageWrapper">
 
     <div class="blob top-[-100px] right-[-100px]"></div>
@@ -166,7 +166,7 @@
     </audio>
 
     <!-- 🧧 Sampul Raya Intro -->
-    <div id="intro" class="flex flex-col items-center animate-fade-in py-4" style="{{ session('card_opened') ? 'display: none;' : '' }}">
+    <div id="intro" class="flex flex-col items-center animate-fade-in py-4">
         <div id="envelopeWrapper" class="envelope-wrapper mb-4 scale-90 sm:scale-100">
             <div id="envelope" class="envelope glass">
                 <div class="flap"></div>
@@ -186,7 +186,7 @@
     </div>
 
     <!-- 🎉 Content Raya (Initially Hidden) -->
-    <div id="mainContent" class="hidden-content w-full flex flex-col items-center px-4 pb-24" style="{{ session('card_opened') ? 'display: flex; opacity: 1;' : '' }}">
+    <div id="mainContent" class="hidden-content w-full flex flex-col items-center px-4 pb-24">
         <!-- Header Section -->
         <header class="text-center mb-4">
             <h1 class="font-festive text-4xl sm:text-5xl text-amber-400 mb-0.5 drop-shadow-lg">Selamat Hari Raya</h1>
@@ -213,7 +213,7 @@
 
             <!-- 📝 Form Card -->
             <div class="glass p-5 sm:p-6 rounded-2xl shadow-xl">
-                <form method="POST" action="/raya" class="space-y-4">
+                <form id="commentForm" method="POST" action="/raya" class="space-y-4">
                     @csrf
                     <div class="space-y-1">
                         <input type="text" name="name" placeholder="Nama Anda" 
@@ -238,7 +238,7 @@
                     <span class="text-xl">💌</span> Titipan Ucapan dari Saudara & Sahabat
                 </h3>
 
-                <div class="grid gap-2">
+                <div id="commentWall" class="grid gap-2">
                     @forelse($comments as $comment)
                         <div class="glass p-3 rounded-lg border-white/5 hover:bg-white/15 transition-all group relative">
                             <div class="flex justify-between items-start mb-0.5">
@@ -277,7 +277,7 @@
     </div>
 
     <!-- 🎵 Music Control (Fixed) -->
-    <div id="musicControl" class="{{ session('card_opened') ? '' : 'hidden' }} fixed bottom-6 right-6 z-50">
+    <div id="musicControl" class="hidden fixed bottom-6 right-6 z-50">
         <button id="musicToggle" class="w-12 h-12 bg-amber-400 text-[#064e3b] rounded-full shadow-2xl flex items-center justify-center hover:scale-110 active:scale-95 transition-all">
             <span id="musicIcon">🎵</span>
         </button>
@@ -307,10 +307,6 @@
             });
         };
 
-        // If card is already open (from session), try to play on any click
-        @if(session('card_opened'))
-            document.addEventListener('click', startRayaMusic, { once: true });
-        @endif
 
         // Envelope Opening Logic
         envelopeWrapper.addEventListener('click', () => {
@@ -376,6 +372,69 @@
                 musicIcon.innerText = '🎵';
             }
             isPlaying = !isPlaying;
+        });
+
+        // 🚀 AJAX Form Submission
+        const commentForm = document.getElementById('commentForm');
+        const commentWall = document.getElementById('commentWall');
+
+        commentForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const formData = new FormData(commentForm);
+            const submitBtn = commentForm.querySelector('button[type="submit"]');
+            const originalText = submitBtn.innerText;
+            
+            submitBtn.disabled = true;
+            submitBtn.innerText = 'Menghantar...';
+
+            try {
+                const response = await fetch('/raya', {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'Accept': 'application/json'
+                    }
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    // Create new comment element
+                    const newComment = document.createElement('div');
+                    newComment.className = 'glass p-3 rounded-lg border-white/5 hover:bg-white/15 transition-all group relative animate-fade-in';
+                    newComment.innerHTML = `
+                        <div class="flex justify-between items-start mb-0.5">
+                            <p class="font-bold text-amber-300 group-hover:text-amber-400 transition-colors text-[13px]">${data.comment.name}</p>
+                            <div class="flex items-center gap-2">
+                                <span class="text-[8px] uppercase tracking-widest opacity-40">${data.comment.created_at}</span>
+                            </div>
+                        </div>
+                        <p class="text-white/80 text-sm leading-snug">${data.comment.message}</p>
+                    `;
+
+                    // Prepend and hide empty message if exists
+                    const emptyMsg = commentWall.querySelector('.italic');
+                    if (emptyMsg) emptyMsg.style.display = 'none';
+                    
+                    commentWall.prepend(newComment);
+                    commentForm.reset();
+                    
+                    // Small success explosion
+                    confetti({
+                        particleCount: 40,
+                        spread: 70,
+                        origin: { y: 0.8 }
+                    });
+                }
+            } catch (error) {
+                console.error('Error submitting comment:', error);
+                alert('Maaf, ada masalah teknikal. Cuba lagi.');
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerText = originalText;
+            }
         });
 
         // 🛡️ Security: Block Right-Click and Common Shortcuts
