@@ -5,7 +5,13 @@ echo "Fixing Apache MPM configuration..."
 a2dismod mpm_event mpm_worker || true
 a2enmod mpm_prefork || true
 
-# 2. Configure Dynamic Port
+# 2. Set Default APP_KEY if missing
+if [ -z "$APP_KEY" ]; then
+    echo "Using default APP_KEY..."
+    export APP_KEY="base64:0ArOU644Ltw/qv/rqu9piIK8EYSZamOqUMFMhyN4trY="
+fi
+
+# 3. Configure Dynamic Port
 if [ -n "$PORT" ]; then
     echo "Configuring Apache to listen on port $PORT"
     sed -i "s/Listen 80/Listen $PORT/g" /etc/apache2/ports.conf
