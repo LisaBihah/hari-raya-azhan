@@ -141,10 +141,10 @@
             </div>
         </div>
         <h2 class="font-festive text-2xl sm:text-3xl text-amber-400 text-center max-w-xs leading-relaxed">
-            Di hari yang mulia ini,<br>
-            kami sekeluarga menyusun sepuluh jari<br>
-            memohon ampun dan maaf<br>
-            zahir serta batin 💚
+            Selamat Hari Raya Aidilfitri 🌙<br>
+            Dengan penuh keikhlasan,<br>
+            kami sekeluarga memohon maaf<br>
+            zahir dan batin 💚
         </h2>
     </div>
 
@@ -156,7 +156,7 @@
             <h2 class="text-lg sm:text-xl font-light tracking-[0.2em] uppercase text-amber-100/80">Aidilfitri</h2>
             <div class="mt-2 flex flex-col items-center">
                 <p class="text-sm opacity-90 max-w-xs px-2">
-                    Kami sekeluarga memohon maaf zahir serta batin 💚
+                    Kami sekeluarga memohon maaf zahir dan batin 💚
                 </p>
                 <p class="mt-1 text-base font-bold text-white border-b border-amber-400 pb-0.5 uppercase tracking-widest leading-none">KELUARGA AZHAN</p>
             </div>
@@ -164,7 +164,7 @@
 
         <div class="mb-4 text-center group">
             <div class="relative inline-block">
-                <img src="{{ asset('images/raya-2026.jpg.jpeg') }}"
+                <img src="{{ asset('images/raya-2026.jpg') }}"
                      class="rounded-xl shadow-lg w-56 sm:w-64 mx-auto border border-amber-400/20 group-hover:border-amber-400/50 transition-all duration-500"
                      id="familyImage"
                      alt="Keluarga Azhan">
